@@ -562,7 +562,7 @@ and StructureSpawnSpawning =
     ///</list></returns>
 
     ///<param name="directions">An array with the direction constants:</param>
-    abstract setDirections: directions:  Direction list -> ScreepCode 
+    abstract setDirections: directions:  Direction array -> ScreepCode 
     ///<summary>Cancel spawning immediately. Energy spent on spawning is not returned. </summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
@@ -579,7 +579,7 @@ and StructureSpawnSpawning =
     ///<summary>The name of a new creep.</summary>
     abstract name:  String
     ///<summary>An array with the spawn directions, see StructureSpawn.Spawning.setDirections.</summary>
-    abstract directions: Direction list 
+    abstract directions: Direction array 
 ///<summary></summary>
 and StructureSpawnspawnCreepOpts =
 
@@ -588,13 +588,13 @@ and StructureSpawnspawnCreepOpts =
     abstract memory: obj option
 
     ///<summary>Array of spawns/extensions from which to draw energy for the spawning process. Structures will be used according to the array order.</summary>
-    abstract energyStructures: U2<StructureSpawn, StructureExtension> list option
+    abstract energyStructures: U2<StructureSpawn, StructureExtension> array option
 
     ///<summary>If dryRun is true, the operation will only check if it is possible to create a creep.</summary>
     abstract dryRun:  Boolean option
 
     ///<summary>Set desired directions where the creep should move when spawned. An array with the direction constants: TOPTOP_RIGHTRIGHTBOTTOM_RIGHTBOTTOMBOTTOM_LEFTLEFTTOP_LEFT</summary>
-    abstract directions: Direction list option
+    abstract directions: Direction array option
 
 ///<summary>Spawn is your colony center. This structure can create, renew, and recycle creeps. All your spawns are accessible through Game.spawns hash list. Spawns auto-regenerate a little amount of energy each tick, so that you can easily recover even if all your creeps died.Spawn is your colony center. This structure can create, renew, and recycle creeps. All your spawns are accessible through Game.spawnsGame.spawnsGame.spawns hash list. Spawns auto-regenerate a little amount of energy each tick, so that you can easily recover even if all your creeps died.</summary>
 and StructureSpawn =
@@ -641,7 +641,7 @@ and StructureSpawn =
     ///<param name="body">An array describing the new creep’s body. Should contain 1 to 50 elements with one of these constants:WORKMOVECARRYATTACKRANGED_ATTACKHEALTOUGHCLAIM</param>
     ///<param name="name">The name of a new creep. The name length limit is 100 characters. It must be a unique creep name, i.e. the Game.creeps object should not contain another creep with the same name (hash key).</param>
     ///<param name="opts">An object with additional options for the spawning process.memoryany Memory of the new creep. If provided, it will be immediately stored into Memory.creeps[name]. energyStructuresarrayArray of spawns/extensions from which to draw energy for the spawning process. Structures will be used according to the array order.dryRunboolean If dryRun is true, the operation will only check if it is possible to create a creep. directions array Set desired directions where the creep should move when spawned. An array with the direction constants:</param>
-    abstract spawnCreep: body: BodyPart list * name: String * ?opts: StructureSpawnspawnCreepOpts -> ScreepCode
+    abstract spawnCreep: body: BodyPart array * name: String * ?opts: StructureSpawnspawnCreepOpts -> ScreepCode
     ///<summary>A Store object that contains cargo of this structure.</summary>
     abstract store:  Store
     ///<summary>If the spawn is in process of spawning a new creep, this object will contain a StructureSpawn.Spawning object, or null otherwise.</summary>
@@ -1253,7 +1253,7 @@ and RoomVisual =
     ///<summary>Draw a polyline.</summary>
     ///<param name="points">An array of points. Every item should be either an array with 2 numbers (i.e. [10,15]), or a RoomPosition object.</param>
     ///<param name="style">An object with the following properties:</param>
-    abstract poly: points:  RoomPosition list * ?style: RoomVisualpolystyleOpts ->RoomVisual
+    abstract poly: points:  RoomPosition array * ?style: RoomVisualpolystyleOpts ->RoomVisual
     ///<summary>Draw a rectangle.</summary>
     ///<param name="x">The X coordinate of the top-left corner.</param>
     ///<param name="y">The Y coordinate of the top-left corner.</param>
@@ -1333,9 +1333,9 @@ and RoomPosition =
     abstract lookFor<'T when 'T :> RoomObject> : sType: Look -> 'T list
     ///<summary>Get an object with the given type at the specified room position.</summary>
     [<Emit("$0.lookFor(LOOK_TERRAIN)")>]
-    abstract lookForTerrain : unit -> Terrain list  
+    abstract lookForTerrain : unit -> Terrain array  
     ///<summary>Get the list of objects at the specified room position.</summary>
-    abstract look: unit -> RoomPositionUnion list 
+    abstract look: unit -> RoomPositionUnion array 
     ///<summary>Check whether this position is on the adjacent square to the specified position. The same as inRangeTo(target, 1).</summary>
     ///<param name="x">X position in the room.</param>
     ///<param name="y">Y position in the room.</param>
@@ -1382,22 +1382,22 @@ and RoomPosition =
     ///<param name="x">X position in the room.</param>
     ///<param name="y">Y position in the room.</param>
     ///<param name="opts">An object containing pathfinding options flags (see Room.findPath for more details).</param>
-    abstract findPathTo: x: Int32 * y: Int32 * ?opts:  RoomfindPathOpts -> PathSegment list 
+    abstract findPathTo: x: Int32 * y: Int32 * ?opts:  RoomfindPathOpts -> PathSegment array 
  
     ///<summary>Find an optimal path to the specified position using Jump Point Search algorithm. This method is a shorthand for Room.findPath. If the target is in another room, then the corresponding exit will be used as a target.</summary>
     ///<param name="target">Can be a RoomPosition object or any object containing RoomPosition.</param>
     ///<param name="opts">An object containing pathfinding options flags (see Room.findPath for more details).</param>
-    abstract findPathTo: target: U2<RoomPosition, RoomObject> * ?opts:  RoomfindPathOpts  -> PathSegment list    ///<summary>Find all objects in the specified linear range.</summary>
+    abstract findPathTo: target: U2<RoomPosition, RoomObject> * ?opts:  RoomfindPathOpts  -> PathSegment array    ///<summary>Find all objects in the specified linear range.</summary>
     ///<param name="sType">See Room.find.</param>
     ///<param name="range">The range distance.</param>
     ///<param name="opts">See Room.find.</param>
-    abstract findInRange<'T> : sType: Find * range: Int32 * ?opts:  RoomfindOpts<'T> -> RoomObject list 
+    abstract findInRange<'T> : sType: Find * range: Int32 * ?opts:  RoomfindOpts<'T> -> RoomObject array 
  
     ///<summary>Find all objects in the specified linear range.</summary>
     ///<param name="objects">An array of room's objects or RoomPosition objects that the search should be executed against.</param>
     ///<param name="range">The range distance.</param>
     ///<param name="opts">See Room.find.</param>
-    abstract findInRange: objects:  U2<RoomPosition, RoomObject> list * range: Int32 * ?opts:  RoomfindOpts<'T> -> RoomObject list
+    abstract findInRange: objects:  U2<RoomPosition, RoomObject> array * range: Int32 * ?opts:  RoomfindOpts<'T> -> RoomObject list
     ///<summary>Find an object with the shortest linear distance from the given position.</summary>
     ///<param name="sType">See Room.find.</param>
     ///<param name="opts">An object containing one of the following options:</param>
@@ -1406,7 +1406,7 @@ and RoomPosition =
     ///<summary>Find an object with the shortest linear distance from the given position.</summary>
     ///<param name="objects">An array of room's objects or RoomPosition objects that the search should be executed against.</param>
     ///<param name="opts">An object containing one of the following options:</param>
-    abstract findClosestByRange<'T> : objects:  U2<RoomPosition, RoomObject> list * ?opts: RoomPositionfindClosestByRangeOpts<'T> -> RoomObject option ///<summary>Find an object with the shortest path from the given position. Uses Jump Point Search algorithm and Dijkstra's algorithm.</summary>
+    abstract findClosestByRange<'T> : objects:  U2<RoomPosition, RoomObject> array * ?opts: RoomPositionfindClosestByRangeOpts<'T> -> RoomObject option ///<summary>Find an object with the shortest path from the given position. Uses Jump Point Search algorithm and Dijkstra's algorithm.</summary>
     ///<param name="sType">See Room.find.</param>
     ///<param name="opts">An object containing pathfinding options (see Room.findPath), or one of the following:</param>
     abstract findClosestByPath<'T> : sType: Find * ?opts: RoomPositionfindClosestByPathOpts<'T> -> RoomObject option 
@@ -1489,10 +1489,10 @@ and RoomfindPathOpts =
     abstract costCallback:   ((String* PathFinderCostMatrix) -> U2<PathFinderCostMatrix, unit>) option
 
     ///<summary>An array of the room's objects or RoomPosition objects which should be treated as walkable tiles during the search. This option cannot be used when the new PathFinder is enabled (use costCallback option instead).</summary>
-    abstract ignore:   U2<RoomObject, RoomPosition> list option
+    abstract ignore:   U2<RoomObject, RoomPosition> array option
 
     ///<summary>An array of the room's objects or RoomPosition objects which should be treated as obstacles during the search. This option cannot be used when the new PathFinder is enabled (use costCallback option instead).</summary>
-    abstract avoid: U2<RoomObject, RoomPosition> list option
+    abstract avoid: U2<RoomObject, RoomPosition> array option
 
     ///<summary>The maximum limit of possible pathfinding operations. You can limit CPU time used for the search based on ratio 1 op ~ 0.001 CPU. The default value is 2000.</summary>
     abstract maxOps:  Int32 option
@@ -1605,12 +1605,12 @@ and Room =
     abstract getPositionAt: x: Int32 * y: Int32 -> RoomPosition
     ///<summary>Returns an array of events happened on the previous tick in this room. </summary>
     ///<param name="raw">If this parameter is false or undefined, the method returns an object parsed using JSON.parse which incurs some CPU cost on the first access (the return value is cached on subsequent calls). If raw is truthy, then raw JSON in string format is returned.</param>
-    abstract getEventLog: raw: Boolean -> EventObject list 
+    abstract getEventLog: raw: Boolean -> EventObject array 
         ///<summary>Find an optimal path inside the room between fromPos and toPos using Jump Point Search algorithm.</summary>
     ///<param name="fromPos">The start position.</param>
     ///<param name="toPos">The end position.</param>
     ///<param name="opts">An object containing additonal pathfinding flags:ignoreCreepsbooleanTreat squares with creeps as walkable. Can be useful with too many moving creeps around or in some other cases. The default value is false.ignoreDestructibleStructuresbooleanTreat squares with destructible structures (constructed walls, ramparts, spawns, extensions) as walkable. The default value is false.ignoreRoadsboolean Ignore road structures. Enabling this option can speed up the search. The default value is false. This is only used when the new PathFinder is enabled. costCallbackfunction(string, CostMatrix) You can use this callback to modify a CostMatrix for any room during the search. The callback accepts two arguments, roomName and costMatrix. Use the costMatrix instance to make changes to the positions costs. If you return a new matrix from this callback, it will be used instead of the built-in cached one. This option is only used when the new PathFinder is enabled. ignorearray An array of the room's objects or RoomPosition objects which should be treated as walkable tiles during the search. This option cannot be used when the new PathFinder is enabled (use costCallback option instead). avoidarray An array of the room's objects or RoomPosition objects which should be treated as obstacles during the search. This option cannot be used when the new PathFinder is enabled (use costCallback option instead). maxOpsnumberThe maximum limit of possible pathfinding operations. You can limit CPU time used for the search based on ratio 1 op ~ 0.001 CPU. The default value is 2000.heuristicWeightnumber Weight to apply to the heuristic in the A formula F = G + weight H. Use this option only if you understand the underlying A* algorithm mechanics! The default value is 1.2. serializeboolean If true, the result path will be serialized using Room.serializePath. The default is false. maxRoomsnumber The maximum allowed rooms to search. The default (and maximum) is 16. This is only used when the new PathFinder is enabled. rangenumberFind a path to a position in specified linear range of target. The default is 0.plainCostnumberCost for walking on plain positions. The default is 1.swampCostnumberCost for walking on swamp positions. The default is 5.</param>
-    abstract findPath: fromPos: RoomPosition * toPos: RoomPosition * ?opts: RoomfindPathOpts -> PathSegment list 
+    abstract findPath: fromPos: RoomPosition * toPos: RoomPosition * ?opts: RoomfindPathOpts -> PathSegment array 
     ///<summary>Find the exit direction en route to another room. Please note that this method is not required for inter-room movement, you can simply pass the target in another room into Creep.moveTo method.</summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>NoPath</term><description>Path can not be found.</description></item>
@@ -1681,7 +1681,7 @@ and Room =
     abstract RoomDeserializePath: path: String -> PathSegment list
     ///<summary>Serialize a path array into a short string representation, which is suitable to store in memory.</summary>
     ///<param name="path">A path array retrieved from Room.findPath.</param>
-    abstract RoomSerializePath: path:  PathSegment list  -> string
+    abstract RoomSerializePath: path:  PathSegment array  -> string
     ///<summary>A RoomVisual object for this room. You can use this object to draw simple shapes (lines, circles, text labels) in the room.</summary>
     abstract visual:  RoomVisual
     ///<summary>The Terminal structure of this room, if present, otherwise undefined.</summary>
@@ -2000,7 +2000,7 @@ and PowerCreep =
     ///<summary>The power creep's class, one of the POWER_CLASS constants.</summary>
     abstract className:  String
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
-    abstract effects: Effect list    ///<summary>A static method to create new Power Creep instance in your account. It will be added in an unspawned state, use spawn method to spawn it in the world.</summary>
+    abstract effects: Effect array    ///<summary>A static method to create new Power Creep instance in your account. It will be added in an unspawned state, use spawn method to spawn it in the world.</summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
     ///<item><term>NameExists</term><description>A power creep with the specified name already exists.</description></item>
@@ -2016,7 +2016,7 @@ and PowerCreep =
 and PathFinderCostMatrix =
     ///<summary>Static method which deserializes a new CostMatrix using the return value of serialize.</summary>
     ///<param name="value">Whatever serialize returned</param>
-    abstract PathFinderCostMatrixDeserialize: value: int list -> PathFinderCostMatrix  
+    abstract PathFinderCostMatrixDeserialize: value: int array -> PathFinderCostMatrix  
     ///<summary>Returns a compact representation of this CostMatrix which can be stored via JSON.stringify.</summary>
     abstract serialize: unit -> int list
     ///<summary>Copy this CostMatrix into a new CostMatrix with the same data.</summary>
@@ -2377,7 +2377,7 @@ and Creep =
     ///</list></returns>
 
     ///<param name="path">A path value as returned from Room.findPath, RoomPosition.findPathTo, or PathFinder.search methods. Both array form and serialized string form are accepted.</param>
-    abstract moveByPath: path: U3<PathSegment list, RoomPosition list , String> -> ScreepCode    
+    abstract moveByPath: path: U3<PathSegment list, RoomPosition array , String> -> ScreepCode    
     ///<summary>Move the creep one square in the specified direction. Requires the MOVE body part, or another creep nearby pulling the creep. In case if you call move on a creep nearby, the ERR_TIRED and the ERR_NO_BODYPART checks will be bypassed; otherwise, the ERR_NOT_IN_RANGE check will be bypassed. </summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
@@ -2541,7 +2541,7 @@ and Creep =
     ///<summary>The movement fatigue indicator. If it is greater than zero, the creep cannot move.</summary>
     abstract fatigue:  Int32
     ///<summary>An array describing the creep’s body. Each element contains the following properties:</summary>
-    abstract body:  BodyPart list 
+    abstract body:  BodyPart array 
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
     abstract effects: Effect list
 ///<summary></summary>
@@ -2593,7 +2593,7 @@ and RawMemory =
 
     ///<summary>Set specified segments as public. Other users will be able to request access to them using setActiveForeignSegment. </summary>
     ///<param name="ids">An array of segment IDs. Each ID should be a number from 0 to 99. Subsequent calls of setPublicSegments override previous ones.</param>
-    abstract RawMemorySetPublicSegments: ids:  int list -> unit 
+    abstract RawMemorySetPublicSegments: ids:  int array -> unit 
     ///<summary>Set the specified segment as your default public segment. It will be returned if no id parameter is passed to setActiveForeignSegment by another user. 
     ///<para> F# - to pass null value: write !^null </para></summary>
     ///<param name="id">The ID of the memory segment from 0 to 99. Pass null to remove your default public segment.</param>
@@ -2605,7 +2605,7 @@ and RawMemory =
     abstract RawMemorySetActiveForeignSegment: username: string * ?id: Int32 -> unit    
     ///<summary>Request memory segments using the list of their IDs. Memory segments will become available on the next tick in segments object.</summary>
     ///<param name="ids">An array of segment IDs. Each ID should be a number from 0 to 99. Maximum 10 segments can be active at the same time. Subsequent calls of setActiveSegments override previous ones.</param>
-    abstract RawMemorySetActiveSegments: ids:  int list -> unit 
+    abstract RawMemorySetActiveSegments: ids:  int array -> unit 
     ///<summary>Set new Memory value.</summary>
     ///<param name="value">New memory value as a string.</param>
     abstract RawMemorySet: value: String -> unit  
@@ -2729,7 +2729,7 @@ and GameMarket =
         {|resourceType: ResourceType; date: DateTime; transactions: int; volume: int; avgPrice: double; stddevPrice: double|} list
     ///<summary>Get other players' orders currently active on the market. This method supports internal indexing by resourceType.</summary>
     ///<param name="filter">An object or function that will filter the resulting list using the lodash.filter method.</param>
-    abstract GameMarketGetAllOrders: ?filter:  (GameMarketOrder -> bool) -> GameMarketOrder list 
+    abstract GameMarketGetAllOrders: ?filter:  (GameMarketOrder -> bool) -> GameMarketOrder array 
     ///<summary>Add more capacity to an existing order. It will affect remainingAmount and totalAmount properties. You will be charged price*addAmount*0.05 credits.</summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
@@ -2791,9 +2791,9 @@ and GameMarket =
     [<Emit("new Map(Object.entries(Game.market.orders))")>]
     abstract GameMarketOrders:   Dictionary<string, GameMarketOrder>
     ///<summary>An array of the last 100 outgoing transactions from your terminals with the following format:</summary>
-    abstract GameMarketOutgoingTransactions: Transaction list  
+    abstract GameMarketOutgoingTransactions: Transaction array  
     ///<summary>An array of the last 100 incoming transactions to your terminals with the following format:</summary>
-    abstract GameMarketIncomingTransactions:   Transaction list  
+    abstract GameMarketIncomingTransactions:   Transaction array  
     ///<summary>Your current credits balance.</summary>
     abstract GameMarketCredits:  double
 and GameMapVisualtextstyleOpts =
@@ -2925,7 +2925,7 @@ and GameMapVisual =
     ///<summary>Draw a polyline.</summary>
     ///<param name="points">An array of points. Every item should be a RoomPosition object.</param>
     ///<param name="style">An object with the following properties:</param>
-    abstract poly: points:  RoomPosition list * ?style: GameMapVisualpolystyleOpts -> GameMapVisual
+    abstract poly: points:  RoomPosition array * ?style: GameMapVisualpolystyleOpts -> GameMapVisual
     ///<summary>Draw a rectangle.</summary>
     ///<param name="topLeftPos">The position object of the top-left corner.</param>
     ///<param name="width">The width of the rectangle.</param>
