@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>fsharp_screeps</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Screeps.fs" />
+  </ItemGroup>
+  <ItemGroup>
+	<PackageReference Include="Fable.Core" Version="3.2.3" />
+   </ItemGroup>
+</Project>
