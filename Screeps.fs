@@ -649,7 +649,7 @@ and StructureSpawn =
     ///<summary>Spawn’s name. You choose the name upon creating a new spawn, and it cannot be changed later. This name is a hash key to access the spawn via the Game.spawns object.</summary>
     abstract name:  String
     ///<summary>A shorthand to Memory.spawns[spawn.name]. You can use it for quick access the spawn’s specific memory data object. Learn more about memory</summary>
-    abstract memory:   obj 
+    abstract memory:   obj with get, set
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
     abstract effects: Effect list
 
@@ -1691,7 +1691,7 @@ and Room =
     ///<summary>The name of the room.</summary>
     abstract name:  String
     ///<summary>A shorthand to Memory.rooms[room.name]. You can use it for quick access the room’s specific memory data object. Learn more about memory</summary>
-    abstract memory:   obj
+    abstract memory:   obj with get, set
     ///<summary>Total amount of energyCapacity of all spawns and extensions in the room.</summary>
     abstract energyCapacityAvailable:  Int32
     ///<summary>Total amount of energy available in all spawns and extensions in the room.</summary>
@@ -1986,7 +1986,7 @@ and PowerCreep =
     ///<summary>Whether it is your creep or foe.</summary>
     abstract my:  Boolean
     ///<summary>A shorthand to Memory.powerCreeps[creep.name]. You can use it for quick access the creep’s specific memory data object. Learn more about memory</summary>
-    abstract memory:   obj  
+    abstract memory:   obj with get, set
     ///<summary>The power creep's level.</summary>
     abstract level:  Int32
     ///<summary>A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by its id.</summary>
@@ -2118,7 +2118,7 @@ and Flag =
     ///<summary>Flag’s name. You can choose the name while creating a new flag, and it cannot be changed later. This name is a hash key to access the flag via the Game.flags object. The maximum name length is 100 charactes.</summary>
     abstract name:  String
     ///<summary>A shorthand to Memory.flags[flag.name]. You can use it for quick access the flag's specific memory data object.</summary>
-    abstract memory:   obj 
+    abstract memory:   obj with get, set
     ///<summary>Flag primary color. One of the COLOR_* constants.</summary>
     abstract color:  Color
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
@@ -2531,7 +2531,7 @@ and Creep =
     ///<summary>Whether it is your creep or foe.</summary>
     abstract my:  Boolean
     ///<summary>A shorthand to Memory.creeps[creep.name]. You can use it for quick access the creep’s specific memory data object. Learn more about memory</summary>
-    abstract memory:   obj 
+    abstract memory:   obj with get, set
     ///<summary>A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by its id.</summary>
     abstract id:  String
     ///<summary>The maximum amount of hit points of the creep.</summary>
@@ -2666,7 +2666,7 @@ and PathFinderSearchResult =
     ///<summary>If the pathfinder fails to find a complete path, this will be true. Note that path will still be populated with a partial path which represents the closest path it could find given the search parameters.</summary>
     abstract incomplete: bool 
 ///<summary></summary>
-and Memory = obj
+and Memory = class end
 ///<summary></summary>
 and GameMarketGameMarketCreateOrderparamsOpts =
     
