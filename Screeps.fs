@@ -1061,6 +1061,7 @@ and Structure =
     ///<param name="enabled">Whether to enable notification or disable.</param>
     abstract notifyWhenAttacked: enabled: Boolean -> ScreepCode    
     ///<summary>Check whether this structure can be used. If room controller level is insufficient, then this method will return false, and the structure will be highlighted with red in the game.</summary>
+    ///<returns>A boolean value.</returns>
     abstract isActive: unit -> bool  
     ///<summary>Destroy this structure immediately.</summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
@@ -1086,12 +1087,15 @@ and Store =
 
     ///<summary>Returns the capacity used by the specified resource. For a general purpose store, it returns total used capacity if resource is undefined. </summary>
     ///<param name="resource">The type of the resource.</param>
+    ///<returns>Returns used capacity number, or null in case of a not valid resource for this store type.</returns>
     abstract getUsedCapacity: ?resource: ResourceType -> int option   
     ///<summary>Returns free capacity for the store. For a limited store, it returns the capacity available for the specified resource if resource is defined and valid for this store. </summary>
     ///<param name="resource">The type of the resource.</param>
+    ///<returns>Returns available capacity number, or null in case of an invalid resource for this store type.</returns>
     abstract getFreeCapacity: ?resource: ResourceType -> int option
     ///<summary>Returns capacity of this store for the specified resource. For a general purpose store, it returns total capacity if resource is undefined.</summary>
     ///<param name="resource">The type of the resource.</param>
+    ///<returns>Returns capacity number, or null in case of an invalid resource for this store type.</returns>
     abstract getCapacity: ?resource: ResourceType -> int option
 
 ///<summary>An energy source object. Can be harvested by creeps with a WORK body part.An energy source object. Can be harvested by creeps with a WORKWORK body part.</summary>
@@ -1231,28 +1235,35 @@ and RoomVisual =
 
     ///<summary>Add previously exported (with RoomVisual.export) room visuals to the room visual data of the current tick. </summary>
     ///<param name="value">The string returned from RoomVisual.export.</param>
+    ///<returns>The RoomVisual object itself, so that you can chain calls.</returns>
     abstract import: value: String -> RoomVisual 
     ///<summary>Returns a compact representation of all visuals added in the room in the current tick.</summary>
+    ///<returns>A string with visuals data. There's not much you can do with the string besides store them for later.</returns>
     abstract export: unit -> string   
     ///<summary>Get the stored size of all visuals added in the room in the current tick. It must not exceed 512,000 (500 KB).</summary>
+    ///<returns>The size of the visuals in bytes.</returns>
     abstract getSize: unit -> int64   
     ///<summary>Remove all visuals from the room.</summary>
+    ///<returns>The RoomVisual object itself, so that you can chain calls.</returns>
     abstract clear: unit -> RoomVisual 
     ///<summary>Draw a text label. You can use any valid Unicode characters, including emoji.</summary>
     ///<param name="text">The text message.</param>
     ///<param name="x">The X coordinate of the label baseline point.</param>
     ///<param name="y">The Y coordinate of the label baseline point.</param>
     ///<param name="style">An object with the following properties:</param>
+    ///<returns>The RoomVisual object itself, so that you can chain calls.</returns>
     abstract text: text: String * x: Int32 * y: Int32 * ?style: RoomVisualtextstyleOpts -> RoomVisual
  
     ///<summary>Draw a text label. You can use any valid Unicode characters, including emoji.</summary>
     ///<param name="text">The text message.</param>
     ///<param name="pos">The position object of the label baseline.</param>
     ///<param name="style">An object with the following properties:</param>
+    ///<returns>The RoomVisual object itself, so that you can chain calls.</returns>
     abstract text: text: String * pos: RoomPosition * ?style: RoomVisualtextstyleOpts -> RoomVisual    
     ///<summary>Draw a polyline.</summary>
     ///<param name="points">An array of points. Every item should be either an array with 2 numbers (i.e. [10,15]), or a RoomPosition object.</param>
     ///<param name="style">An object with the following properties:</param>
+    ///<returns>The RoomVisual object itself, so that you can chain calls.</returns>
     abstract poly: points:  RoomPosition array * ?style: RoomVisualpolystyleOpts ->RoomVisual
     ///<summary>Draw a rectangle.</summary>
     ///<param name="x">The X coordinate of the top-left corner.</param>
@@ -1260,6 +1271,7 @@ and RoomVisual =
     ///<param name="width">The width of the rectangle.</param>
     ///<param name="height">The height of the rectangle.</param>
     ///<param name="style">An object with the following properties:fillstring Fill color in any web format, default is #ffffff (white). opacitynumberOpacity value, default is 0.5.strokestringStroke color in any web format, default is undefined (no stroke).strokeWidthnumberStroke line width, default is 0.1.lineStylestring Either undefined (solid line), dashed, or dotted. Default is undefined.</param>
+    ///<returns>The RoomVisual object itself, so that you can chain calls.</returns>
     abstract rect: x: Int32 * y: Int32 * width: Int32 * height: Int32 * ?style: RoomVisualrectstyleOpts -> RoomVisual
  
     ///<summary>Draw a rectangle.</summary>
@@ -1267,16 +1279,19 @@ and RoomVisual =
     ///<param name="width">The width of the rectangle.</param>
     ///<param name="height">The height of the rectangle.</param>
     ///<param name="style">An object with the following properties:fillstring Fill color in any web format, default is #ffffff (white). opacitynumberOpacity value, default is 0.5.strokestringStroke color in any web format, default is undefined (no stroke).strokeWidthnumberStroke line width, default is 0.1.lineStylestring Either undefined (solid line), dashed, or dotted. Default is undefined.</param>
+    ///<returns>The RoomVisual object itself, so that you can chain calls.</returns>
     abstract rect: topLeftPos: RoomPosition * width: Int32 * height: Int32 * ?style: RoomVisualrectstyleOpts -> RoomVisual 
     ///<summary>Draw a circle.</summary>
     ///<param name="x">The X coordinate of the center.</param>
     ///<param name="y">The Y coordinate of the center.</param>
     ///<param name="style">An object with the following properties:radiusnumberCircle radius, default is 0.15.fillstring Fill color in any web format, default is #ffffff (white). opacitynumberOpacity value, default is 0.5.strokestringStroke color in any web format, default is undefined (no stroke).strokeWidthnumberStroke line width, default is 0.1.lineStylestring Either undefined (solid line), dashed, or dotted. Default is undefined.</param>
+    ///<returns>The RoomVisual object itself, so that you can chain calls.</returns>
     abstract circle: x: Int32 * y: Int32 * ?style: RoomVisualcirclestyleOpts -> RoomVisual 
  
     ///<summary>Draw a circle.</summary>
     ///<param name="pos">The position object of the center.</param>
     ///<param name="style">An object with the following properties:radiusnumberCircle radius, default is 0.15.fillstring Fill color in any web format, default is #ffffff (white). opacitynumberOpacity value, default is 0.5.strokestringStroke color in any web format, default is undefined (no stroke).strokeWidthnumberStroke line width, default is 0.1.lineStylestring Either undefined (solid line), dashed, or dotted. Default is undefined.</param>
+    ///<returns>The RoomVisual object itself, so that you can chain calls.</returns>
     abstract circle: pos: RoomPosition * ?style: RoomVisualcirclestyleOpts -> RoomVisual
     ///<summary>Draw a line.</summary>
     ///<param name="x1">The start X coordinate.</param>
@@ -1284,11 +1299,13 @@ and RoomVisual =
     ///<param name="x2">The finish X coordinate.</param>
     ///<param name="y2">The finish Y coordinate.</param>
     ///<param name="style">An object with the following properties:widthnumberLine width, default is 0.1.colorstring Line color in any web format, default is #ffffff (white). opacitynumberOpacity value, default is 0.5.lineStylestring Either undefined (solid line), dashed, or dotted. Default is undefined.</param>
+    ///<returns>The RoomVisual object itself, so that you can chain calls.</returns>
     abstract line: x1: Int32 * y1: Int32 * x2: Int32 * y2: Int32 * ?style: RoomVisuallinestyleOpts -> RoomVisual 
     ///<summary>Draw a line.</summary>
     ///<param name="pos1">The start position object.</param>
     ///<param name="pos2">The finish position object.</param>
     ///<param name="style">An object with the following properties:widthnumberLine width, default is 0.1.colorstring Line color in any web format, default is #ffffff (white). opacitynumberOpacity value, default is 0.5.lineStylestring Either undefined (solid line), dashed, or dotted. Default is undefined.</param>
+    ///<returns>The RoomVisual object itself, so that you can chain calls.</returns>
     abstract line: pos1: RoomPosition * pos2: RoomPosition * ?style: RoomVisuallinestyleOpts -> RoomVisual
     ///<summary>The name of the room.</summary>
     abstract roomName:  String
@@ -1325,13 +1342,18 @@ and RoomPositionUnion =
        PowerCreep: PowerCreep;
        Ruin: Ruin
      }
+and RoomPositionCreateFlagResult =
+    | CreateFlag of string
+    | CannotCreateFlag of ScreepCode
 ///<summary>An object representing the specified position in the room. Every RoomObject in the room contains RoomPosition as the pos property. The position object of a custom location can be obtained using the Room.getPositionAt method or using the constructor.An object representing the specified position in the room. Every RoomObjectRoomObject in the room contains RoomPositionRoomPosition as the pospos property. The position object of a custom location can be obtained using the Room.getPositionAtRoom.getPositionAtRoom.getPositionAt method or using the constructor.</summary>
 and RoomPosition =
 
     ///<summary>Get an object with the given type at the specified room position.</summary>
     ///<param name="sType">One of the LOOK_* constants.</param>
+    ///<returns>An array of objects of the given type at the specified position if found.</returns>
     abstract lookFor<'T when 'T :> RoomObject> : sType: Look -> 'T list
     ///<summary>Get an object with the given type at the specified room position.</summary>
+    ///<returns>An array of objects of the given type at the specified position if found.</returns>
     [<Emit("$0.lookFor(LOOK_TERRAIN)")>]
     abstract lookForTerrain : unit -> Terrain array  
     ///<summary>Get the list of objects at the specified room position.</summary>
@@ -1339,44 +1361,54 @@ and RoomPosition =
     ///<summary>Check whether this position is on the adjacent square to the specified position. The same as inRangeTo(target, 1).</summary>
     ///<param name="x">X position in the room.</param>
     ///<param name="y">Y position in the room.</param>
+    ///<returns>A boolean value</returns>
     abstract isNearTo: x: Int32 * y: Int32 -> bool 
  
     ///<summary>Check whether this position is on the adjacent square to the specified position. The same as inRangeTo(target, 1).</summary>
     ///<param name="target">Can be a RoomPosition object or any object containing RoomPosition.</param>
+    ///<returns>A boolean value</returns>
     abstract isNearTo: target:  U2<RoomPosition, RoomObject> -> bool
      ///<summary>Check whether this position is the same as the specified position.</summary>
     ///<param name="x">X position in the room.</param>
     ///<param name="y">Y position in the room.</param>
+    ///<returns>A boolean value</returns>
     abstract isEqualTo: x: Int32 * y: Int32 -> bool
  
     ///<summary>Check whether this position is the same as the specified position.</summary>
     ///<param name="target">Can be a RoomPosition object or any object containing RoomPosition.</param>
+    ///<returns>A boolean value</returns>
     abstract isEqualTo: target:  U2<RoomPosition, RoomObject>  -> bool
     ///<summary>Check whether this position is in the given range of another position.</summary>
     ///<param name="x">X position in the same room.</param>
     ///<param name="y">Y position in the same room.</param>
     ///<param name="range">The range distance.</param>
+    ///<returns>A boolean value</returns>
     abstract inRangeTo: x: Int32 * y: Int32 * range: Int32 -> bool
  
     ///<summary>Check whether this position is in the given range of another position.</summary>
     ///<param name="target">The target position.</param>
     ///<param name="range">The range distance.</param>
+    ///<returns>A boolean value</returns>
     abstract inRangeTo: target: RoomPosition * range: Int32 -> bool
     ///<summary>Get linear range to the specified position.</summary>
     ///<param name="x">X position in the room.</param>
     ///<param name="y">Y position in the room.</param>
+    ///<returns>A number of squares to the given position.</returns>
     abstract getRangeTo: x: Int32 * y: Int32 -> int 
  
     ///<summary>Get linear range to the specified position.</summary>
     ///<param name="target">Can be a RoomPosition object or any object containing RoomPosition.</param>
+    ///<returns>A number of squares to the given position.</returns>
     abstract getRangeTo: target: U2<RoomPosition, RoomObject> -> int 
     ///<summary>Get linear direction to the specified position.</summary>
     ///<param name="x">X position in the room.</param>
     ///<param name="y">Y position in the room.</param>
+    ///<returns>A number representing one of the direction constants.</returns>
     abstract getDirectionTo: x: Int32 * y: Int32 -> Direction
  
     ///<summary>Get linear direction to the specified position.</summary>
     ///<param name="target">Can be a RoomPosition object or any object containing RoomPosition.</param>
+    ///<returns>A number representing one of the direction constants.</returns>
     abstract getDirectionTo: target:  U2<RoomPosition, RoomObject> -> Direction 
     ///<summary>Find an optimal path to the specified position using Jump Point Search algorithm. This method is a shorthand for Room.findPath. If the target is in another room, then the corresponding exit will be used as a target.</summary>
     ///<param name="x">X position in the room.</param>
@@ -1387,35 +1419,43 @@ and RoomPosition =
     ///<summary>Find an optimal path to the specified position using Jump Point Search algorithm. This method is a shorthand for Room.findPath. If the target is in another room, then the corresponding exit will be used as a target.</summary>
     ///<param name="target">Can be a RoomPosition object or any object containing RoomPosition.</param>
     ///<param name="opts">An object containing pathfinding options flags (see Room.findPath for more details).</param>
+    ///<returns>An array with path steps</returns>
     abstract findPathTo: target: U2<RoomPosition, RoomObject> * ?opts:  RoomfindPathOpts  -> PathSegment array    ///<summary>Find all objects in the specified linear range.</summary>
     ///<param name="sType">See Room.find.</param>
     ///<param name="range">The range distance.</param>
     ///<param name="opts">See Room.find.</param>
-    abstract findInRange<'T> : sType: Find * range: Int32 * ?opts:  RoomfindOpts<'T> -> RoomObject array 
+    ///<returns>An array with the objects found.</returns>
+    abstract findInRange<'T when 'T :> RoomObject> : sType: Find * range: Int32 * ?opts:  RoomfindOpts<'T> -> 'T array 
  
     ///<summary>Find all objects in the specified linear range.</summary>
     ///<param name="objects">An array of room's objects or RoomPosition objects that the search should be executed against.</param>
     ///<param name="range">The range distance.</param>
     ///<param name="opts">See Room.find.</param>
-    abstract findInRange: objects:  U2<RoomPosition, RoomObject> array * range: Int32 * ?opts:  RoomfindOpts<'T> -> RoomObject list
+    ///<returns>An array with the objects found.</returns>
+    abstract findInRange: objects:  U2<RoomPosition array, RoomObject array>  * range: Int32 * ?opts:  RoomfindOpts<'T> -> RoomObject list
     ///<summary>Find an object with the shortest linear distance from the given position.</summary>
     ///<param name="sType">See Room.find.</param>
     ///<param name="opts">An object containing one of the following options:</param>
-    abstract findClosestByRange<'T> : sType: Find * ?opts: RoomPositionfindClosestByRangeOpts<'T> -> RoomObject option 
+    ///<returns>The closest object if found, null otherwise.</returns>
+    abstract findClosestByRange<'T when 'T :> RoomObject> : sType: Find * ?opts: RoomPositionfindClosestByRangeOpts<'T> -> 'T option 
  
     ///<summary>Find an object with the shortest linear distance from the given position.</summary>
     ///<param name="objects">An array of room's objects or RoomPosition objects that the search should be executed against.</param>
     ///<param name="opts">An object containing one of the following options:</param>
-    abstract findClosestByRange<'T> : objects:  U2<RoomPosition, RoomObject> array * ?opts: RoomPositionfindClosestByRangeOpts<'T> -> RoomObject option ///<summary>Find an object with the shortest path from the given position. Uses Jump Point Search algorithm and Dijkstra's algorithm.</summary>
+    ///<returns>The closest object if found, null otherwise.</returns>
+    abstract findClosestByRange<'T> : objects:  U2<RoomPosition array, RoomObject array> * ?opts: RoomPositionfindClosestByRangeOpts<'T> -> RoomObject option ///<summary>Find an object with the shortest path from the given position. Uses Jump Point Search algorithm and Dijkstra's algorithm.</summary>
     ///<param name="sType">See Room.find.</param>
     ///<param name="opts">An object containing pathfinding options (see Room.findPath), or one of the following:</param>
-    abstract findClosestByPath<'T> : sType: Find * ?opts: RoomPositionfindClosestByPathOpts<'T> -> RoomObject option 
+    ///<returns>The closest object if found, null otherwise.</returns>
+    abstract findClosestByPath<'T when 'T :> RoomObject> : sType: Find * ?opts: RoomPositionfindClosestByPathOpts<'T> -> 'T option 
     ///<summary>Find an object with the shortest path from the given position. Uses Jump Point Search algorithm and Dijkstra's algorithm.</summary>
     ///<param name="objects">An array of room's objects or RoomPosition objects that the search should be executed against.</param>
     ///<param name="opts">An object containing pathfinding options (see Room.findPath), or one of the following:</param>
-    abstract findClosestByPath<'T> : objects:  U2<RoomPosition, RoomObject> * ?opts: RoomPositionfindClosestByPathOpts<'T> -> RoomObject option 
+    ///<returns>The closest object if found, null otherwise.</returns>
+    abstract findClosestByPath<'T> : objects:  U2<RoomPosition array, RoomObject array>  * ?opts: RoomPositionfindClosestByPathOpts<'T> -> RoomObject option 
     ///<summary>Create new Flag at the specified location.</summary>
-    ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
+    ///<returns> The name of a new flag, or one of the following error codes:
+    ///<list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>NameExists</term><description>There is a flag with the same name already.</description></item>
     ///<item><term>InvalidArgs</term><description>The location or the color constant is incorrect.</description></item>
     ///</list></returns>
@@ -1423,7 +1463,7 @@ and RoomPosition =
     ///<param name="name">The name of a new flag. It should be unique, i.e. the Game.flags object should not contain another flag with the same name (hash key). If not defined, a random name will be generated.</param>
     ///<param name="color">The color of a new flag. Should be one of the COLOR_* constants. The default value is COLOR_WHITE.</param>
     ///<param name="secondaryColor">The secondary color of a new flag. Should be one of the COLOR_* constants. The default value is equal to color.</param>
-    abstract createFlag: ?name: String * ?color: String * ?secondaryColor: String -> ScreepCode
+    abstract createFlag: ?name: String * ?color: Color * ?secondaryColor: Color -> RoomPositionCreateFlagResult
     ///<summary>Create new ConstructionSite at the specified location.</summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
@@ -1457,10 +1497,13 @@ and RoomObject =
 ///<summary>An object which provides fast access to room terrain data. These objects can be constructed for any room in the world even if you have no access to it.An object which provides fast access to room terrain data. These objects can be constructed for any room in the world even if you have no access to it.Technically every Room.Terrain object is a very lightweight adapter to underlying static terrain buffers with corresponding minimal accessors.Technically every Room.TerrainRoom.Terrain object is a very lightweight adapter to underlying static terrain buffers with corresponding minimal accessors.</summary>
 and RoomTerrain  =
     ///<summary>Get copy of underlying static terrain buffer. Current underlying representation is Uint8Array.</summary>
-    ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
+    ///<returns>
+    /// <para>Copy of underlying room terrain representations as a new Uint8Array typed array of size 2500.</para>
+    /// <para>Each element is an integer number, terrain type can be obtained by applying bitwise AND operator with appropriate TERRAIN_MASK_* constant. Room tiles are stored row by row.</para>
+    /// <para>If destinationArray is specified, function returns reference to this filled destinationArray if coping succeeded, or error code otherwise:</para>
+    ///<list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>InvalidArgs</term><description>destinationArray type is incompatible.</description></item>
     ///</list></returns>
-
     ///<param name="destinationArray">A typed array view in which terrain will be copied to.</param>
     abstract getRawBuffer: ?destinationArray: uint8 array -> ScreepCode
     ///<summary>Get terrain type at the specified room position by (x,y) coordinates. Unlike the Game.map.getTerrainAt(...) method, this one doesn't perform any string operations and returns integer terrain type values (see below).</summary>
@@ -1526,13 +1569,6 @@ and LookAtAreaArrayResult<'T when 'T :> RoomObject> =
     abstract member x: int
     abstract member y: int
     abstract member item: 'T
-///<summary>A stub object with purpose to represent terrain name constant as RoomObject instance.
-/// So it don't have implementation of javaScript's RoomObject 
-/// and will throw exception if any of methods will be called.
-/// This object can be casted to string
-///</summary>
-// Seem strange at first glance, but it fits perfectly for methods such as Room.lookForAt, Room.lookAt
-// what just looks for the objects.
 and RoomLookAtUnion = 
       {
          X: int; Y: int;
@@ -1557,6 +1593,9 @@ and RoomLookAtAreaResult =
 and RoomLookAtResult = 
     | ArrayRes of RoomLookAtUnion 
     | MatrixResult of obj
+and RoomFindExitResult = 
+    | ExitFounded of Find
+    | ExitFoundErr of ScreepCode
 and Room =
     ///<summary>Get the list of objects with the given type at the specified room area.</summary>
     ///<param name="sType">One of the LOOK_* constants.</param>
@@ -1564,44 +1603,54 @@ and Room =
     ///<param name="left">The left X boundary of the area.</param>
     ///<param name="bottom">The bottom Y boundary of the area.</param>
     ///<param name="right">The right X boundary of the area.</param>
+    ///<returns>If asArray is set to false or undefined, the method returns an object with all the objects of the given type</returns>
     abstract lookForAtArea: sType: Look * top: Int32 * left: Int32 * bottom: Int32 * right: Int32 -> RoomLookAtAreaResult
     ///<summary>Get an object with the given type at the specified room position.</summary>
     ///<param name="sType">One of the LOOK_* constants.</param>
     ///<param name="x">X position in the room.</param>
     ///<param name="y">Y position in the room.</param>
-    abstract lookForAt<'T when 'T :> RoomObject> : sType: Look * x: Int32 * y: Int32 -> 'T list
+    ///<returns>An array of objects of the given type at the specified position if found.</returns>
+    abstract lookForAt<'T when 'T :> RoomObject> : sType: Look * x: Int32 * y: Int32 -> 'T []
     ///<summary>Get a terraint with the given type at the specified room position.</summary>
     ///<param name="x">X position in the room.</param>
     ///<param name="y">Y position in the room.</param>
+    ///<returns>An array of objects of the given type at the specified position if found.</returns>
     [<Emit("$0.lookForAt(LOOK_TERRAIN, $1, $2)")>]
-    abstract lookForTerrainAt : x: Int32 * y: Int32 -> Terrain list
+    abstract lookForTerrainAt : x: Int32 * y: Int32 -> Terrain []
     ///<summary>Get an object with the given type at the specified room position.</summary>
     ///<param name="sType">One of the LOOK_* constants.</param>
     ///<param name="target">Can be a RoomPosition object or any object containing RoomPosition.</param>
-    abstract lookForAt<'T when 'T :> RoomObject> : sType: Look * target:  U2<RoomPosition, RoomObject> -> 'T list
+    ///<returns>An array of objects of the given type at the specified position if found.</returns>
+    abstract lookForAt<'T when 'T :> RoomObject> : sType: Look * target:  U2<RoomPosition, RoomObject> -> 'T []
     ///<summary>Get an object with the given type at the specified room position.</summary>
     ///<param name="target">Can be a RoomPosition object or any object containing RoomPosition.</param>
+    ///<returns>An array of objects of the given type at the specified position if found.</returns>
     [<Emit("$0.lookForAt(LOOK_TERRAIN, $1)")>]
-    abstract lookForTerrainAt<'T when 'T :> RoomObject> :  target:  U2<RoomPosition, RoomObject> -> 'T list
+    abstract lookForTerrainAt:  target:  U2<RoomPosition, RoomObject> -> Terrain []
     ///<summary>Get the list of objects at the specified room area.</summary>
     ///<param name="top">The top Y boundary of the area.</param>
     ///<param name="left">The left X boundary of the area.</param>
     ///<param name="bottom">The bottom Y boundary of the area.</param>
     ///<param name="right">The right X boundary of the area.</param>
     ///<param name="asArray">Set to true if you want to get the result as a plain array.</param>
+    ///<returns>If asArray is set to true. Returns ArrayRes case, else MatrixResult</returns>
     abstract lookAtArea: top: Int32 * left: Int32 * bottom: Int32 * right: Int32 * ?asArray: Boolean -> RoomLookAtAreaResult
     ///<summary>Get the list of objects at the specified room position.</summary>
     ///<param name="x">X position in the room.</param>
     ///<param name="y">Y position in the room.</param>
+    ///<returns>An array with objects at the specified position </returns>
     abstract lookAt: x: Int32 * y: Int32 -> RoomLookAtUnion
     ///<summary>Get the list of objects at the specified room position.</summary>
     ///<param name="target">Can be a RoomPosition object or any object containing RoomPosition.</param>
+    ///<returns>An array with objects at the specified position </returns>
     abstract lookAt: target:  U2<RoomPosition, RoomObject> -> RoomLookAtUnion 
     ///<summary>Get a Room.Terrain object which provides fast access to static terrain data. This method works for any room in the world even if you have no access to it.</summary>
+    ///<returns>Returns new Room.Terrain object</returns>
     abstract getTerrain: unit -> RoomTerrain 
-        ///<summary>Creates a RoomPosition object at the specified location.</summary>
+    ///<summary>Creates a RoomPosition object at the specified location.</summary>
     ///<param name="x">The X position.</param>
     ///<param name="y">The Y position.</param>
+    ///<returns>A RoomPosition object or null if it cannot be obtained.</returns>
     abstract getPositionAt: x: Int32 * y: Int32 -> RoomPosition
     ///<summary>Returns an array of events happened on the previous tick in this room. </summary>
     ///<param name="raw">If this parameter is false or undefined, the method returns an object parsed using JSON.parse which incurs some CPU cost on the first access (the return value is cached on subsequent calls). If raw is truthy, then raw JSON in string format is returned.</param>
@@ -1610,19 +1659,21 @@ and Room =
     ///<param name="fromPos">The start position.</param>
     ///<param name="toPos">The end position.</param>
     ///<param name="opts">An object containing additonal pathfinding flags:ignoreCreepsbooleanTreat squares with creeps as walkable. Can be useful with too many moving creeps around or in some other cases. The default value is false.ignoreDestructibleStructuresbooleanTreat squares with destructible structures (constructed walls, ramparts, spawns, extensions) as walkable. The default value is false.ignoreRoadsboolean Ignore road structures. Enabling this option can speed up the search. The default value is false. This is only used when the new PathFinder is enabled. costCallbackfunction(string, CostMatrix) You can use this callback to modify a CostMatrix for any room during the search. The callback accepts two arguments, roomName and costMatrix. Use the costMatrix instance to make changes to the positions costs. If you return a new matrix from this callback, it will be used instead of the built-in cached one. This option is only used when the new PathFinder is enabled. ignorearray An array of the room's objects or RoomPosition objects which should be treated as walkable tiles during the search. This option cannot be used when the new PathFinder is enabled (use costCallback option instead). avoidarray An array of the room's objects or RoomPosition objects which should be treated as obstacles during the search. This option cannot be used when the new PathFinder is enabled (use costCallback option instead). maxOpsnumberThe maximum limit of possible pathfinding operations. You can limit CPU time used for the search based on ratio 1 op ~ 0.001 CPU. The default value is 2000.heuristicWeightnumber Weight to apply to the heuristic in the A formula F = G + weight H. Use this option only if you understand the underlying A* algorithm mechanics! The default value is 1.2. serializeboolean If true, the result path will be serialized using Room.serializePath. The default is false. maxRoomsnumber The maximum allowed rooms to search. The default (and maximum) is 16. This is only used when the new PathFinder is enabled. rangenumberFind a path to a position in specified linear range of target. The default is 0.plainCostnumberCost for walking on plain positions. The default is 1.swampCostnumberCost for walking on swamp positions. The default is 5.</param>
+    ///<returns>An array with path steps</returns>
     abstract findPath: fromPos: RoomPosition * toPos: RoomPosition * ?opts: RoomfindPathOpts -> PathSegment array 
     ///<summary>Find the exit direction en route to another room. Please note that this method is not required for inter-room movement, you can simply pass the target in another room into Creep.moveTo method.</summary>
-    ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
+    ///<returns> if success. Returns case with Exit Find constants, else Case with ScreepCode
+    ///<list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>NoPath</term><description>Path can not be found.</description></item>
     ///<item><term>InvalidArgs</term><description>The location is incorrect.</description></item>
     ///</list></returns>
 
     ///<param name="room">Another room name or room object.</param>
-    abstract findExitTo: room: U2<String, Room> -> ScreepCode 
+    abstract findExitTo: room: U2<String, Room> -> RoomFindExitResult 
     ///<summary>Find all objects of the specified type in the room. Results are cached automatically for the specified room and type before applying any custom filters. This automatic cache lasts until the end of the tick.</summary>
     ///<param name="sType">One of the FIND_* constants.</param>
     ///<param name="opts">An object with additional options:</param>
-    abstract find<'T> : sType: Find * ?opts: RoomfindOpts<'T> -> RoomObject list
+    abstract find<'T> : sType: Find * ?opts: RoomfindOpts<'T> -> RoomObject array
     ///<summary>Create new Flag at the specified location.</summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>NameExists</term><description>There is a flag with the same name already.</description></item>
@@ -1634,7 +1685,7 @@ and Room =
     ///<param name="name">The name of a new flag. It should be unique, i.e. the Game.flags object should not contain another flag with the same name (hash key). If not defined, a random name will be generated. The maximum length is 100 characters.</param>
     ///<param name="color">The color of a new flag. Should be one of the COLOR_* constants. The default value is COLOR_WHITE.</param>
     ///<param name="secondaryColor">The secondary color of a new flag. Should be one of the COLOR_* constants. The default value is equal to color.</param>
-    abstract createFlag: x: Int32 * y: Int32 * ?name: String * ?color: String * ?secondaryColor: String -> ScreepCode
+    abstract createFlag: x: Int32 * y: Int32 * ?name: String * ?color: Color * ?secondaryColor: Color -> RoomPositionCreateFlagResult
  
     ///<summary>Create new Flag at the specified location.</summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
@@ -1678,9 +1729,11 @@ and Room =
     abstract createConstructionSite: pos:  U2<RoomPosition, RoomObject> * structureType: String * ?name: String -> ScreepCode    
     ///<summary>Deserialize a short string path representation into an array form.</summary>
     ///<param name="path">A serialized path string.</param>
+    ///<returns>A path array.</returns>
     abstract RoomDeserializePath: path: String -> PathSegment list
     ///<summary>Serialize a path array into a short string representation, which is suitable to store in memory.</summary>
     ///<param name="path">A path array retrieved from Room.findPath.</param>
+    ///<returns>A serialized string form of the given path.</returns>
     abstract RoomSerializePath: path:  PathSegment array  -> string
     ///<summary>A RoomVisual object for this room. You can use this object to draw simple shapes (lines, circles, text labels) in the room.</summary>
     abstract visual:  RoomVisual
@@ -2018,6 +2071,7 @@ and PathFinderCostMatrix =
     ///<param name="value">Whatever serialize returned</param>
     abstract PathFinderCostMatrixDeserialize: value: int array -> PathFinderCostMatrix  
     ///<summary>Returns a compact representation of this CostMatrix which can be stored via JSON.stringify.</summary>
+    ///<returns>An array of numbers. There's not much you can do with the numbers besides store them for later.</returns>
     abstract serialize: unit -> int list
     ///<summary>Copy this CostMatrix into a new CostMatrix with the same data.</summary>
     abstract clone: unit -> PathFinderCostMatrix 
@@ -2785,6 +2839,7 @@ and GameMarket =
     ///<param name="amount">Amount of resources to be sent.</param>
     ///<param name="roomName1">The name of the first room.</param>
     ///<param name="roomName2">The name of the second room.</param>
+    ///<returns>The amount of energy required to perform the transaction.</returns>
     abstract GameMarketCalcTransactionCost: amount: Int32 * roomName1: String * roomName2: String -> int
     
     ///<summary>An object with your active and inactive buy/sell orders on the market. See getAllOrders for properties explanation.</summary>
@@ -2910,36 +2965,45 @@ and GameMapVisual =
 
     ///<summary>Add previously exported (with Game.map.visual.export) map visuals to the map visual data of the current tick. </summary>
     ///<param name="value">The string returned from Game.map.visual.export.</param>
+    ///<returns>The MapVisual object itself, so that you can chain calls.</returns>
     abstract import: value: String -> GameMapVisual    
     ///<summary>Returns a compact representation of all visuals added on the map in the current tick.</summary>
+    ///<returns>A string with visuals data. There's not much you can do with the string besides store them for later.</returns>
     abstract export: unit -> string  
     ///<summary>Get the stored size of all visuals added on the map in the current tick. It must not exceed 1024,000 (1000 KB).</summary>
+    ///<returns>A string with visuals data. There's not much you can do with the string besides store them for later.</returns>
     abstract getSize: unit -> int64  
     ///<summary>Remove all visuals from the map.</summary>
+    ///<returns>The MapVisual object itself, so that you can chain calls.</returns>
     abstract clear: unit -> GameMapVisual
     ///<summary>Draw a text label. You can use any valid Unicode characters, including emoji.</summary>
     ///<param name="text">The text message.</param>
     ///<param name="pos">The position object of the label baseline.</param>
     ///<param name="style">An object with the following properties:</param>
+    ///<returns>The MapVisual object itself, so that you can chain calls.</returns>
     abstract text: text: String * pos: RoomPosition * ?style: GameMapVisualtextstyleOpts -> GameMapVisual
     ///<summary>Draw a polyline.</summary>
     ///<param name="points">An array of points. Every item should be a RoomPosition object.</param>
     ///<param name="style">An object with the following properties:</param>
+    ///<returns>The MapVisual object itself, so that you can chain calls.</returns>
     abstract poly: points:  RoomPosition array * ?style: GameMapVisualpolystyleOpts -> GameMapVisual
     ///<summary>Draw a rectangle.</summary>
     ///<param name="topLeftPos">The position object of the top-left corner.</param>
     ///<param name="width">The width of the rectangle.</param>
     ///<param name="height">The height of the rectangle.</param>
     ///<param name="style">An object with the following properties:fillstring Fill color in the following format: #ffffff (hex triplet). Default is #ffffff. opacitynumberOpacity value, default is 0.5.strokestring Stroke color in the following format: #ffffff (hex triplet). Default is undefined (no stroke). strokeWidthnumberStroke line width, default is 0.5.lineStylestring Either undefined (solid line), dashed, or dotted. Default is undefined.</param>
+    ///<returns>The MapVisual object itself, so that you can chain calls.</returns>
     abstract rect: topLeftPos: RoomPosition * width: Int32 * height: Int32 * ?style: GameMapVisualrectstyleOpts -> GameMapVisual   
     ///<summary>Draw a circle.</summary>
     ///<param name="pos">The position object of the center.</param>
     ///<param name="style">An object with the following properties:radiusnumberCircle radius, default is 10.fillstring Fill color in the following format: #ffffff (hex triplet). Default is #ffffff. opacitynumberOpacity value, default is 0.5.strokestring Stroke color in the following format: #ffffff (hex triplet). Default is undefined (no stroke). strokeWidthnumberStroke line width, default is 0.5.lineStylestring Either undefined (solid line), dashed, or dotted. Default is undefined.</param>
+    ///<returns>The MapVisual object itself, so that you can chain calls.</returns>
     abstract circle: pos: RoomPosition * ?style: GameMapVisualcirclestyleOpts -> GameMapVisual 
     ///<summary>Draw a line.</summary>
     ///<param name="pos1">The start position object.</param>
     ///<param name="pos2">The finish position object.</param>
     ///<param name="style">An object with the following properties:widthnumberLine width, default is 0.1.colorstring Line color in the following format: #ffffff (hex triplet). Default is #ffffff. opacitynumberOpacity value, default is 0.5.lineStylestring Either undefined (solid line), dashed, or dotted. Default is undefined.</param>
+    ///<returns>The MapVisual object itself, so that you can chain calls.</returns>
     abstract line: pos1: RoomPosition * pos2: RoomPosition * ?style: GameMapVisuallinestyleOpts -> GameMapVisual
 ///<summary></summary>
 and GameMapGameMapFindRouteOpts =
@@ -3099,7 +3163,8 @@ and Game =
     abstract GameNotify: message: String * groupInterval: Int32 -> unit    
     ///<summary>Get an object with the specified unique ID. It may be a game object of any type. Only objects from the rooms which are visible to you can be accessed.</summary>
     ///<param name="id">The unique identificator.</param>
-    abstract GameGetObjectById<'T> : id: String -> 'T
+    ///<returns>Returns an object instance or null if it cannot be found.</returns>
+    abstract GameGetObjectById<'T> : id: String -> 'T option
     ///<summary>Generate 1 pixel resource unit for 10000 CPU from your bucket.</summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
@@ -3127,6 +3192,7 @@ and Game =
     ///<summary>This method is only available when Virtual machine is set to Isolated in your account runtime settings.</summary>
     abstract GameCpuHalt: unit -> unit 
     ///<summary>Get amount of CPU time used from the beginning of the current game tick. Always returns 0 in the Simulation mode.</summary>
+    ///<returns>Returns currently used CPU time as a float number.</returns>
     abstract GameCpuGetUsed: unit -> double    
     ///<summary>This method is only available when Virtual machine is set to Isolated in your account runtime settings.</summary>
     abstract GameCpuGetHeapStatistics: unit -> HeapStatisctic 
@@ -3180,24 +3246,33 @@ let [<Global>] RawMemory: RawMemory = jsNative
 
 type RoomPositionStatic =
     [<EmitConstructor>]
+    ///<summary>You can create new RoomPosition object using its constructor.</summary>
+    ///<param name="x">X position in the room.</param>
+    ///<param name="y">Y position in the room.</param>
+    ///<param name="roomName">The room name.</param>
     abstract Create: x: int * y: int * roomName: string -> RoomPosition
 
 let [<Global>] RoomPosition: RoomPositionStatic = jsNative
 
 type RoomVisualStatic = 
     [<EmitConstructor>]
+    ///<summary>You can directly create new RoomVisual object in any room, even if it's invisible to your script.</summary>
+    ///<param name="roomName">The room name. If undefined, visuals will be posted to all rooms simultaneously.</param>
     abstract Create: ?roomName: string -> RoomVisual
 
 let [<Global>] RoomVisual: RoomVisualStatic = jsNative
 
 type PathFinderCostMatrixStatic = 
     [<Emit("new PathFinder.CostMatrix")>]
+    ///<summary>Creates a new CostMatrix containing 0's for all positions. </summary>
     abstract Create: unit -> PathFinderCostMatrix
 
 let [<Global>] PathFinderCostMatrix: PathFinderCostMatrixStatic = jsNative
 
 type RoomTerraintStatic = 
     [<Emit("new Room.Terrain($1)")>]
+    ///<summary>Creates a new Terrain of room by its name. Terrain objects can be constructed for any room in the world even if you have no access to it.</summary>
+    ///<param name="roomName">The room name.</param>
     abstract Create: roomName: String -> RoomTerrain
 
 let [<Global>] RoomTerrain: RoomTerraintStatic = jsNative
