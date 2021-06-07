@@ -9,6 +9,12 @@ type Order =
     | Sell
     | Buy
 
+type Density =
+    | Low = 1
+    | Moderate = 2
+    | High = 3
+    | Ultra = 4
+
 type Color =
     | Cyan = 4
     | Green = 5
@@ -416,7 +422,7 @@ type BodyPart =
 type Effect = 
     abstract effect: EffectType
     abstract level: int option
-    abstract ticksRemaining: int64
+    abstract ticksRemaining: int32
 
 type Event = 
     | Attack = 1
@@ -448,13 +454,13 @@ type Tombstone =
 
 
     ///<summary>The amount of game ticks before this tombstone decays.</summary>
-    abstract ticksToDecay:  Int64
+    abstract ticksToDecay:  Int32
     ///<summary>A Store object that contains cargo of this structure.</summary>
     abstract store:  Store
     ///<summary>A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by its id.</summary>
     abstract id:  String
     ///<summary>Time of death. </summary>
-    abstract deathTime:  Int32
+    abstract deathTime:  Int64
     ///<summary>An object containing the deceased creep or power creep.</summary>
     abstract creep:  U2<Creep, PowerCreep>
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
@@ -573,9 +579,9 @@ and StructureSpawnSpawning =
     ///<summary>A link to the spawn.</summary>
     abstract spawn:  StructureSpawn
     ///<summary>Remaining time to go.</summary>
-    abstract remainingTime:  Int64
+    abstract remainingTime:  Int32
     ///<summary>Time needed in total to complete the spawning.</summary>
-    abstract needTime:  Int64
+    abstract needTime:  Int32
     ///<summary>The name of a new creep.</summary>
     abstract name:  String
     ///<summary>An array with the spawn directions, see StructureSpawn.Spawning.setDirections.</summary>
@@ -660,7 +666,7 @@ and StructureRoad =
 
 
     ///<summary>The amount of game ticks when this road will lose some hit points.</summary>
-    abstract ticksToDecay:  Int64
+    abstract ticksToDecay:  Int32
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
     abstract effects: Effect list
 
@@ -679,7 +685,7 @@ and StructureRampart =
     ///<param name="isPublic">Whether this rampart should be public or non-public.</param>
     abstract setPublic: isPublic: Boolean -> ScreepCode
     ///<summary>The amount of game ticks when this rampart will lose some hit points.</summary>
-    abstract ticksToDecay:  Int64
+    abstract ticksToDecay:  Int32
     ///<summary>If false (default), only your creeps can step on the same square. If true, any hostile creeps can pass through.</summary>
     abstract isPublic:  Boolean
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
@@ -692,7 +698,7 @@ and StructurePortal =
 
 
     ///<summary>The amount of game ticks when the portal disappears, or undefined when the portal is stable.</summary>
-    abstract ticksToDecay:  Int64
+    abstract ticksToDecay:  Int32
     ///<summary>If this is an inter-room portal, then this property contains a RoomPosition object leading to the point in the destination room.</summary>
     abstract destination:  U2<RoomPosition,  {|shard: String; room: String|}>
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
@@ -725,9 +731,9 @@ and StructurePowerBank =
 
 
     ///<summary>The amount of game ticks when this structure will disappear.</summary>
-    abstract ticksToDecay:  Int64
+    abstract ticksToDecay:  Int32
     ///<summary>The amount of power containing.</summary>
-    abstract power:  Int32
+    abstract power:  int32
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
     abstract effects: Effect list
 
@@ -774,7 +780,7 @@ and StructureNuker =
     ///<summary>A Store object that contains cargo of this structure.</summary>
     abstract store:  Store
     ///<summary>The amount of game ticks until the next launch is possible.</summary>
-    abstract cooldown:  Int32
+    abstract cooldown:  int32
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
     abstract effects: Effect list
 
@@ -803,7 +809,7 @@ and StructureLink =
     ///<summary>A Store object that contains cargo of this structure.</summary>
     abstract store:  Store
     ///<summary>The amount of game ticks the link has to wait until the next transfer is possible.</summary>
-    abstract cooldown:  Int32
+    abstract cooldown:  int32
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
     abstract effects: Effect list
 
@@ -875,9 +881,9 @@ and StructureLab =
     ///<summary>A Store object that contains cargo of this structure.</summary>
     abstract store:  Store
     ///<summary>The type of minerals containing in the lab. Labs can contain only one mineral type at the same time.</summary>
-    abstract mineralType:  String
+    abstract mineralType:  ResourceType
     ///<summary>The amount of game ticks the lab has to wait until the next reaction or unboost operation is possible.</summary>
-    abstract cooldown:  Int32
+    abstract cooldown:  int32
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
     abstract effects: Effect list
 
@@ -889,7 +895,7 @@ and StructureKeeperLair =
 
 
     ///<summary>Time to spawning of the next Source Keeper.</summary>
-    abstract ticksToSpawn:  Int32
+    abstract ticksToSpawn:  int32
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
     abstract effects: Effect list
 
@@ -903,7 +909,7 @@ and StructureInvaderCore =
     ///<summary>If the core is in process of spawning a new creep, this object will contain a StructureSpawn.Spawning object, or null otherwise.</summary>
     abstract spawning:  StructureSpawnSpawning option
     ///<summary>Shows the timer for a ot yet deployed stronghold, undefined otherwise. </summary>
-    abstract ticksToDeploy:  Int32
+    abstract ticksToDeploy:  int32
     ///<summary>The level of the stronghold. The amount and quality of the loot depends on the level.</summary>
     abstract level:  Int32
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
@@ -935,7 +941,7 @@ and StructureFactory =
     ///<summary>The factory's level. Can be set by applying the PWR_OPERATE_FACTORY power to a newly built factory. Once set, the level cannot be changed. </summary>
     abstract level:  Int32
     ///<summary>The amount of game ticks the factory has to wait until the next production is possible.</summary>
-    abstract cooldown:  Int32
+    abstract cooldown:  int32
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
     abstract effects: Effect list
 
@@ -947,7 +953,7 @@ and StructureExtractor =
 
 
     ///<summary>The amount of game ticks until the next harvest action is possible.</summary>
-    abstract cooldown:  Int32
+    abstract cooldown:  int32
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
     abstract effects: Effect list
 
@@ -973,7 +979,7 @@ and StructureControllersignResult =
     abstract text:  String
 
     ///<summary>The sign time in game ticks.</summary>
-    abstract time:  Int32
+    abstract time:  int64
 
     ///<summary>The sign real date.</summary>
     abstract datetime:  DateTime
@@ -985,7 +991,7 @@ and StructureControllerreservationResult =
     abstract username:  String
 
     ///<summary>The amount of game ticks when the reservation will end.</summary>
-    abstract ticksToEnd:  Int32
+    abstract ticksToEnd: int32
 
 ///<summary>Claim this structure to take control over the room. The controller structure cannot be damaged or destroyed. Claim this structure to take control over the room. The controller structure cannot be damaged or destroyed. It can be addressed by Room.controller property.It can be addressed by Room.controllerRoom.controllerRoom.controller property.</summary>
 and StructureController =
@@ -1016,11 +1022,11 @@ and StructureController =
     ///<summary>An object with the controller sign info if present:</summary>
     abstract sign:  StructureControllersignResult
     ///<summary>During this period in ticks new safe mode activations will be blocked, undefined if cooldown is inactive.</summary>
-    abstract safeModeCooldown:  Int32
+    abstract safeModecooldown:  int32
     ///<summary>Safe mode activations available to use.</summary>
     abstract safeModeAvailable:  Int32
     ///<summary>How many ticks of safe mode remaining, or undefined.</summary>
-    abstract safeMode:  Int32
+    abstract safeMode:  Int32 option
     ///<summary>An object with the controller reservation info if present:</summary>
     abstract reservation:  StructureControllerreservationResult
     ///<summary>The progress needed to reach the next level.</summary>
@@ -1041,7 +1047,7 @@ and StructureContainer =
 
 
     ///<summary>The amount of game ticks when this container will lose some hit points.</summary>
-    abstract ticksToDecay:  Int64
+    abstract ticksToDecay:  Int32
     ///<summary>A Store object that contains cargo of this structure.</summary>
     abstract store:  Store
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
@@ -1104,13 +1110,13 @@ and Source =
 
 
     ///<summary>The remaining time after which the source will be refilled.</summary>
-    abstract ticksToRegeneration:  Int32
+    abstract ticksToRegeneration:  int32
     ///<summary>A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by its id.</summary>
     abstract id:  String
     ///<summary>The total amount of energy in the source.</summary>
-    abstract energyCapacity:  Int32
+    abstract energyCapacity:  int32
     ///<summary>The remaining amount of energy.</summary>
-    abstract energy:  Int32
+    abstract energy:  int32
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
     abstract effects: Effect list
 
@@ -1120,7 +1126,7 @@ and Ruin =
 
 
     ///<summary>The amount of game ticks before this ruin decays.</summary>
-    abstract ticksToDecay:  Int64
+    abstract ticksToDecay:  Int32
     ///<summary>An object containing basic data of the destroyed structure.</summary>
     abstract structure:  U2<Structure, OwnedStructure>
     ///<summary>A Store object that contains resources of this structure.</summary>
@@ -1128,9 +1134,12 @@ and Ruin =
     ///<summary>A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by its id.</summary>
     abstract id:  String
     ///<summary>The time when the structure has been destroyed. </summary>
-    abstract destroyTime:  Int32
+    abstract destroyTime:  Int64
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
     abstract effects: Effect list
+and [<StringEnum>] LineStyle =
+    | Dashed
+    | Dotted
 ///<summary></summary>
 and RoomVisualtextstyleOpts =
 
@@ -1138,25 +1147,25 @@ and RoomVisualtextstyleOpts =
     abstract color:  String option
 
     ///<summary>Either a number or a string in one of the following forms: 0.7 - relative size in game coordinates20px - absolute size in pixels0.7 serifbold italic 1.5 Times New Roman</summary>
-    abstract font:  U2<Int32, String> option
+    abstract font:  U2<double, String> option
 
     ///<summary>Stroke color in any web format, default is undefined (no stroke).</summary>
     abstract stroke:  String option
 
     ///<summary>Stroke width, default is 0.15.</summary>
-    abstract strokeWidth:  Int32 option
+    abstract strokeWidth:  double option
 
     ///<summary>Background color in any web format, default is undefined (no background). When background is enabled, text vertical align is set to middle (default is baseline).</summary>
     abstract backgroundColor:  String option
 
     ///<summary>Background rectangle padding, default is 0.3.</summary>
-    abstract backgroundPadding:  Int32 option
+    abstract backgroundPadding:  double option
 
     ///<summary>Text align, either center, left, or right. Default is center.</summary>
-    abstract align:  String option
+    abstract align:  VisualTextAlign option
 
     ///<summary>Opacity value, default is 1.0.</summary>
-    abstract opacity:  Int32 option
+    abstract opacity:  double option
 ///<summary></summary>
 and RoomVisualpolystyleOpts =
 
@@ -1165,16 +1174,16 @@ and RoomVisualpolystyleOpts =
     abstract fill:  String option
 
     ///<summary>Opacity value, default is 0.5.</summary>
-    abstract opacity:  Int32 option
+    abstract opacity:  double option
 
     ///<summary>Stroke color in any web format, default is #ffffff (white).</summary>
     abstract stroke:  String option
 
     ///<summary>Stroke line width, default is 0.1.</summary>
-    abstract strokeWidth:  Int32 option
+    abstract strokeWidth:  double option
 
     ///<summary>Either undefined (solid line), dashed, or dotted. Default is undefined.</summary>
-    abstract lineStyle:  String option
+    abstract lineStyle:  LineStyle option
 ///<summary></summary>
 and RoomVisualrectstyleOpts =
 
@@ -1183,52 +1192,52 @@ and RoomVisualrectstyleOpts =
     abstract fill:  String option
 
     ///<summary>Opacity value, default is 0.5.</summary>
-    abstract opacity:  Int32 option
+    abstract opacity:  double option
 
     ///<summary>Stroke color in any web format, default is undefined (no stroke).</summary>
     abstract stroke:  String option
 
     ///<summary>Stroke line width, default is 0.1.</summary>
-    abstract strokeWidth:  Int32 option
+    abstract strokeWidth:  double option
 
     ///<summary>Either undefined (solid line), dashed, or dotted. Default is undefined.</summary>
-    abstract lineStyle:  String option
+    abstract lineStyle:  LineStyle option
 ///<summary></summary>
 and RoomVisualcirclestyleOpts =
 
 
     ///<summary>Circle radius, default is 0.15.</summary>
-    abstract radius:  Int32 option
+    abstract radius:  double option
 
     ///<summary>Fill color in any web format, default is #ffffff (white).</summary>
     abstract fill:  String option
 
     ///<summary>Opacity value, default is 0.5.</summary>
-    abstract opacity:  Int32 option
+    abstract opacity:  double option
 
     ///<summary>Stroke color in any web format, default is undefined (no stroke).</summary>
     abstract stroke:  String option
 
     ///<summary>Stroke line width, default is 0.1.</summary>
-    abstract strokeWidth:  Int32 option
+    abstract strokeWidth:  double option
 
     ///<summary>Either undefined (solid line), dashed, or dotted. Default is undefined.</summary>
-    abstract lineStyle:  String option
+    abstract lineStyle:  LineStyle option
 ///<summary></summary>
 and RoomVisuallinestyleOpts =
 
 
     ///<summary>Line width, default is 0.1.</summary>
-    abstract width:  Int32 option
+    abstract width:  double option
 
     ///<summary>Line color in any web format, default is #ffffff (white).</summary>
     abstract color:  String option
 
     ///<summary>Opacity value, default is 0.5.</summary>
-    abstract opacity:  Int32 option
+    abstract opacity:  double option
 
     ///<summary>Either undefined (solid line), dashed, or dotted. Default is undefined.</summary>
-    abstract lineStyle:  String option
+    abstract lineStyle:  LineStyle option
 
 ///<summary>Room visuals provide a way to show various visual debug info in game rooms. You can use the RoomVisual object to draw simple shapes that are visible only to you. Every existing Room object already contains the visual property, but you also can create new RoomVisual objects for any room (even without visibility) using the constructor.Room visuals provide a way to show various visual debug info in game rooms. You can use the RoomVisualRoomVisual object to draw simple shapes that are visible only to you. Every existing RoomRoom object already contains the visualvisualvisual property, but you also can create new RoomVisualRoomVisual objects for any room (even without visibility) using the constructorconstructor.Room visuals are not stored in the database, their only purpose is to display something in your browser. All drawings will persist for one tick and will disappear if not updated. All RoomVisual API calls have no added CPU cost (their cost is natural and mostly related to simple JSON.serialize calls). However, there is a usage limit: you cannot post more than 500 KB of serialized data per one room (see getSize method).Room visuals are not stored in the database, their only purpose is to display something in your browser. All drawings will persist for one tick and will disappear if not updated. All RoomVisualRoomVisual API calls have no added CPU cost (their cost is natural and mostly related to simple JSON.serializeJSON.serialize calls). However, there is a usage limit: you cannot post more than 500 KB of serialized data per one room (see getSizegetSizegetSize method).All draw coordinates are measured in game coordinates and centered to tile centers, i.e. (10,10) will point to the center of the creep at x:10; y:10 position. Fractional coordinates are allowed.All draw coordinates are measured in game coordinates and centered to tile centers, i.e. (10,10) will point to the center of the creep at x:10; y:10x:10; y:10 position. Fractional coordinates are allowed.</summary>
 and RoomVisual =
@@ -1242,7 +1251,7 @@ and RoomVisual =
     abstract export: unit -> string   
     ///<summary>Get the stored size of all visuals added in the room in the current tick. It must not exceed 512,000 (500 KB).</summary>
     ///<returns>The size of the visuals in bytes.</returns>
-    abstract getSize: unit -> int64   
+    abstract getSize: unit -> int32
     ///<summary>Remove all visuals from the room.</summary>
     ///<returns>The RoomVisual object itself, so that you can chain calls.</returns>
     abstract clear: unit -> RoomVisual 
@@ -1475,7 +1484,7 @@ and RoomPosition =
 
     ///<param name="structureType">One of the STRUCTURE_* constants.</param>
     ///<param name="name">The name of the structure, for structures that support it (currently only spawns).</param>
-    abstract createConstructionSite: structureType: String * ?name: String -> ScreepCode
+    abstract createConstructionSite: structureType: StructureType * ?name: String -> ScreepCode
     ///<summary>Y position in the room.</summary>
     abstract y:  Int32
     ///<summary>X position in the room.</summary>
@@ -1532,16 +1541,16 @@ and RoomfindPathOpts =
     abstract costCallback:   ((String* PathFinderCostMatrix) -> U2<PathFinderCostMatrix, unit>) option
 
     ///<summary>An array of the room's objects or RoomPosition objects which should be treated as walkable tiles during the search. This option cannot be used when the new PathFinder is enabled (use costCallback option instead).</summary>
-    abstract ignore:   U2<RoomObject, RoomPosition> array option
+    abstract ignore:   U2<RoomObject array, RoomPosition array>  option
 
     ///<summary>An array of the room's objects or RoomPosition objects which should be treated as obstacles during the search. This option cannot be used when the new PathFinder is enabled (use costCallback option instead).</summary>
-    abstract avoid: U2<RoomObject, RoomPosition> array option
+    abstract avoid: U2<RoomObject array, RoomPosition array> option
 
     ///<summary>The maximum limit of possible pathfinding operations. You can limit CPU time used for the search based on ratio 1 op ~ 0.001 CPU. The default value is 2000.</summary>
     abstract maxOps:  Int32 option
 
     ///<summary>Weight to apply to the heuristic in the A formula F = G + weight  H. Use this option only if you understand the underlying A* algorithm mechanics! The default value is 1.2.</summary>
-    abstract heuristicWeight:  Int32 option
+    abstract heuristicWeight:  double option
 
     ///<summary>If true, the result path will be serialized using Room.serializePath. The default is false.</summary>
     abstract serialize:  Boolean option
@@ -1727,14 +1736,7 @@ and Room =
     ///<param name="structureType">One of the STRUCTURE_* constants.</param>
     ///<param name="name">The name of the structure, for structures that support it (currently only spawns). The name length limit is 100 characters.</param>
     abstract createConstructionSite: pos:  U2<RoomPosition, RoomObject> * structureType: String * ?name: String -> ScreepCode    
-    ///<summary>Deserialize a short string path representation into an array form.</summary>
-    ///<param name="path">A serialized path string.</param>
-    ///<returns>A path array.</returns>
-    abstract RoomDeserializePath: path: String -> PathSegment list
-    ///<summary>Serialize a path array into a short string representation, which is suitable to store in memory.</summary>
-    ///<param name="path">A path array retrieved from Room.findPath.</param>
-    ///<returns>A serialized string form of the given path.</returns>
-    abstract RoomSerializePath: path:  PathSegment array  -> string
+    
     ///<summary>A RoomVisual object for this room. You can use this object to draw simple shapes (lines, circles, text labels) in the room.</summary>
     abstract visual:  RoomVisual
     ///<summary>The Terminal structure of this room, if present, otherwise undefined.</summary>
@@ -1788,7 +1790,7 @@ and PowerCreeppowersResult =
     abstract level:  Int32
 
     ///<summary>Cooldown ticks remaining, or undefined if the power creep is not spawned in the world.</summary>
-    abstract cooldown:  Int32
+    abstract cooldown:  int32
 
 ///<summary>Power Creeps are immortal "heroes" that are tied to your account and can be respawned in any PowerSpawn after death. You can upgrade their abilities ("powers") up to your account Global Power Level (see Game.gpl).Power Creeps are immortal "heroes" that are tied to your account and can be respawned in any PowerSpawnPowerSpawn after death. You can upgrade their abilities ("powers") up to your account Global Power Level (see Game.gplGame.gplGame.gpl).</summary>
 and Owner = {username: String}
@@ -2049,30 +2051,19 @@ and PowerCreep =
     ///<summary>The current amount of hit points of the creep.</summary>
     abstract hits:  Int32
     ///<summary>A timestamp when this creep is marked to be permanently deleted from the account, or undefined otherwise.</summary>
-    abstract deleteTime:  Int32
+    abstract deleteTime:  Int64
     ///<summary>The power creep's class, one of the POWER_CLASS constants.</summary>
     abstract className:  String
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
-    abstract effects: Effect array    ///<summary>A static method to create new Power Creep instance in your account. It will be added in an unspawned state, use spawn method to spawn it in the world.</summary>
-    ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
-    ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
-    ///<item><term>NameExists</term><description>A power creep with the specified name already exists.</description></item>
-    ///<item><term>NotEnoughResources</term><description>You don't have free Power Levels in your account.</description></item>
-    ///<item><term>InvalidArgs</term><description>The provided power creep name is exceeds the limit, or the power creep class is invalid.</description></item>
-    ///</list></returns>
-
-    ///<param name="name">The name of the new power creep. The name length limit is 100 characters.</param>
-    ///<param name="className">The class of the new power creep, one of the POWER_CLASS constants.</param>
-    abstract PowerCreepCreate: name: String * className: PowerClass -> ScreepCode
+    abstract effects: Effect array    
+    
 
 ///<summary>Container for custom navigation cost data. By default PathFinder will only consider terrain data (plain, swamp, wall) — if you need to route around obstacles such as buildings or creeps you must put them into a CostMatrix. Generally you will create your CostMatrix from within roomCallback. If a non-0 value is found in a room's CostMatrix then that value will be used instead of the default terrain cost. You should avoid using large values in your CostMatrix and terrain cost flags. For example, running PathFinder.search with { plainCost: 1, swampCost: 5 } is faster than running it with {plainCost: 2, swampCost: 10 } even though your paths will be the same.Container for custom navigation cost data. By default PathFinderPathFinder will only consider terrain data (plain, swamp, wall) — if you need to route around obstacles such as buildings or creeps you must put them into a CostMatrixCostMatrix. Generally you will create your CostMatrixCostMatrix from within roomCallbackroomCallback. If a non-0 value is found in a room's CostMatrix then that value will be used instead of the default terrain cost. You should avoid using large values in your CostMatrix and terrain cost flags. For example, running PathFinder.searchPathFinder.search with { plainCost: 1, swampCost: 5 }{ plainCost: 1, swampCost: 5 } is faster than running it with {plainCost: 2, swampCost: 10 }{plainCost: 2, swampCost: 10 } even though your paths will be the same.</summary>
 and PathFinderCostMatrix =
-    ///<summary>Static method which deserializes a new CostMatrix using the return value of serialize.</summary>
-    ///<param name="value">Whatever serialize returned</param>
-    abstract PathFinderCostMatrixDeserialize: value: int array -> PathFinderCostMatrix  
+    
     ///<summary>Returns a compact representation of this CostMatrix which can be stored via JSON.stringify.</summary>
     ///<returns>An array of numbers. There's not much you can do with the numbers besides store them for later.</returns>
-    abstract serialize: unit -> int list
+    abstract serialize: unit -> int array
     ///<summary>Copy this CostMatrix into a new CostMatrix with the same data.</summary>
     abstract clone: unit -> PathFinderCostMatrix 
     ///<summary>Get the cost of a position in this CostMatrix.</summary>
@@ -2124,11 +2115,11 @@ and Mineral =
 
 
     ///<summary>The remaining time after which the deposit will be refilled.</summary>
-    abstract ticksToRegeneration:  int64
+    abstract ticksToRegeneration:  Int32
     ///<summary>A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by its id.</summary>
     abstract id:  String
     ///<summary>The resource type, one of the RESOURCE_* constants.</summary>
-    abstract mineralType:  String
+    abstract mineralType:  ResourceType
     ///<summary>The remaining amount of resources.</summary>
     abstract mineralAmount:  Int32
     ///<summary>The density that this mineral deposit will be refilled to once ticksToRegeneration reaches 0. This is one of the DENSITY_* constants.</summary>
@@ -2184,15 +2175,15 @@ and Deposit =
 
 
     ///<summary>The amount of game ticks when this deposit will disappear.</summary>
-    abstract ticksToDecay:  Int64
+    abstract ticksToDecay:  int32
     ///<summary>The cooldown of the last harvest operation on this deposit.</summary>
-    abstract lastCooldown:  Int64
+    abstract lastcooldown:  int32
     ///<summary>A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by its id.</summary>
     abstract id:  String
-    ///<summary>The deposit type, one of the following constants:</summary>
-    abstract depositType:  String
+    ///<summary>The deposit type, one of the following constants: Mist; Biomass; Metal; Silicon</summary>
+    abstract depositType:  ResourceType
     ///<summary>The amount of game ticks until the next harvest action is possible.</summary>
-    abstract cooldown:  Int64
+    abstract cooldown:  int32
     ///<summary>Applied effects, an array of objects with the following properties:</summary>
     abstract effects: Effect list
 ///<summary></summary>
@@ -2233,7 +2224,6 @@ and Creep =
     ///<item><term>NotInRange</term><description>The target is too far away.</description></item>
     ///<item><term>InvalidArgs</term><description>The resourceType is not one of the RESOURCE_* constants, or the amount is incorrect.</description></item>
     ///</list></returns>
-
     ///<param name="target">The target object.</param>
     ///<param name="resourceType">One of the RESOURCE_* constants.</param>
     ///<param name="amount">The amount of resources to be transferred. If omitted, all the available amount is used.</param>
@@ -2647,28 +2637,28 @@ and RawMemory =
 
     ///<summary>Set specified segments as public. Other users will be able to request access to them using setActiveForeignSegment. </summary>
     ///<param name="ids">An array of segment IDs. Each ID should be a number from 0 to 99. Subsequent calls of setPublicSegments override previous ones.</param>
-    abstract RawMemorySetPublicSegments: ids:  int array -> unit 
+    abstract setPublicSegments: ids:  int array -> unit 
     ///<summary>Set the specified segment as your default public segment. It will be returned if no id parameter is passed to setActiveForeignSegment by another user. 
     ///<para> F# - to pass null value: write !^null </para></summary>
     ///<param name="id">The ID of the memory segment from 0 to 99. Pass null to remove your default public segment.</param>
-    abstract RawMemorySetDefaultPublicSegment: id: U2<int32, obj> -> unit    
+    abstract setDefaultPublicSegment: id: U2<int32, obj> -> unit    
     ///<summary>Request a memory segment of another user. The segment should be marked by its owner as public using setPublicSegments. The segment data will become available on the next tick in foreignSegment object. You can only have access to one foreign segment at the same time. 
     ///</summary>
     ///<param name="username">The name of another user. Pass null to clear the foreign segment.</param>
     ///<param name="id">The ID of the requested segment from 0 to 99. If undefined, the user's default public segment is requested as set by setDefaultPublicSegment.</param>
-    abstract RawMemorySetActiveForeignSegment: username: string * ?id: Int32 -> unit    
+    abstract setActiveForeignSegment: username: string * ?id: Int32 -> unit    
     ///<summary>Request memory segments using the list of their IDs. Memory segments will become available on the next tick in segments object.</summary>
     ///<param name="ids">An array of segment IDs. Each ID should be a number from 0 to 99. Maximum 10 segments can be active at the same time. Subsequent calls of setActiveSegments override previous ones.</param>
-    abstract RawMemorySetActiveSegments: ids:  int array -> unit 
+    abstract setActiveSegments: ids:  int array -> unit 
     ///<summary>Set new Memory value.</summary>
     ///<param name="value">New memory value as a string.</param>
-    abstract RawMemorySet: value: String -> unit  
+    abstract set: value: String -> unit  
     ///<summary>Get a raw string representation of the Memory object.</summary>
-    abstract RawMemoryGet: unit -> string
+    abstract get: unit -> string
     ///<summary>An object with a memory segment of another player available on this tick. Use setActiveForeignSegment to fetch segments on the next tick. The object consists of the following properties:</summary>
-    abstract RawMemoryForeignSegment:  RawMemoryRawMemoryForeignSegmentResult
+    abstract foreignSegment:  RawMemoryRawMemoryForeignSegmentResult
     ///<summary>An object with asynchronous memory segments available on this tick. Each object key is the segment ID with data in string values. Use setActiveSegments to fetch segments on the next tick. Segments data is saved automatically in the end of the tick. The maximum size per segment is 100 KB.</summary>
-    abstract RawMemorySegments: string array 
+    abstract segments: string array 
 ///<summary></summary>
 and PathFinderPathFinderSearchOpts =
 
@@ -2719,13 +2709,13 @@ and PathFinderSearchResult =
     abstract cost: int
     ///<summary>If the pathfinder fails to find a complete path, this will be true. Note that path will still be populated with a partial path which represents the closest path it could find given the search parameters.</summary>
     abstract incomplete: bool 
-///<summary></summary>
+///<summary>F#: Feel free to extend this class as you want.</summary>
 and Memory = class end
 ///<summary></summary>
 and GameMarketGameMarketCreateOrderparamsOpts =
     
     ///<summary>The order type, either ORDER_SELL or ORDER_BUY.</summary>
-    abstract sType:  String option
+    abstract sType:  Order option
 
     ///<summary>Either one of the RESOURCE_* constants or one of account-bound resources (See INTERSHARD_RESOURCES constant). If your Terminal doesn't have the specified resource, the order will be temporary inactive.</summary>
     abstract resourceType:  ResourceType option
@@ -2773,17 +2763,17 @@ and Transaction =
     }
 and TransactionOrder = { id: string; Type: Order; price: double; }
 ///<summary>A global object representing the in-game market. You can use this object to track resource transactions to/from your terminals, and your buy/sell orders.A global object representing the in-game market. You can use this object to track resource transactions to/from your terminals, and your buy/sell orders.Learn more about the market system from this article.Learn more about the market system from this articlethis article.</summary>
-and GameMarket =
+and Market =
     ///<summary>Retrieve info for specific market order.</summary>
     ///<param name="id">The order ID.</param>
-    abstract GameMarketGetOrderById: id: String -> GameMarketOrder    
+    abstract getOrderById: id: String -> GameMarketOrder    
     ///<summary>Get daily price history of the specified resource on the market for the last 14 days. </summary>
     ///<param name="resourceType">One of the RESOURCE_* constants. If undefined, returns history data for all resources.</param>
-    abstract GameMarketGetHistory: ?resourceType: ResourceType ->
+    abstract getHistory: ?resourceType: ResourceType ->
         {|resourceType: ResourceType; date: DateTime; transactions: int; volume: int; avgPrice: double; stddevPrice: double|} list
     ///<summary>Get other players' orders currently active on the market. This method supports internal indexing by resourceType.</summary>
     ///<param name="filter">An object or function that will filter the resulting list using the lodash.filter method.</param>
-    abstract GameMarketGetAllOrders: ?filter:  (GameMarketOrder -> bool) -> GameMarketOrder array 
+    abstract getAllOrders: ?filter:  (GameMarketOrder -> bool) -> GameMarketOrder array 
     ///<summary>Add more capacity to an existing order. It will affect remainingAmount and totalAmount properties. You will be charged price*addAmount*0.05 credits.</summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
@@ -2792,7 +2782,7 @@ and GameMarket =
     ///</list></returns>
     ///<param name="orderId">The order ID as provided in Game.market.orders.</param>
     ///<param name="addAmount">How much capacity to add. Cannot be a negative value.</param>
-    abstract GameMarketExtendOrder: orderId: String * addAmount: Int32 -> ScreepCode    
+    abstract extendOrder: orderId: String * addAmount: Int32 -> ScreepCode    
     ///<summary>Execute a trade deal from your Terminal in yourRoomName to another player's Terminal using the specified buy/sell order. Your Terminal will be charged energy units of transfer cost regardless of the order resource type. You can use Game.market.calcTransactionCost method to estimate it. When multiple players try to execute the same deal, the one with the shortest distance takes precedence. You cannot execute more than 10 deals during one tick.</summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
@@ -2805,7 +2795,7 @@ and GameMarket =
     ///<param name="orderId">The order ID as provided in Game.market.getAllOrders.</param>
     ///<param name="amount">The amount of resources to transfer.</param>
     ///<param name="yourRoomName">The name of your room which has to contain an active Terminal with enough amount of energy. This argument is not used when the order resource type is one of account-bound resources (See INTERSHARD_RESOURCES constant).</param>
-    abstract GameMarketDeal: orderId: String * amount: Int32 * ?yourRoomName: String -> ScreepCode    
+    abstract deal: orderId: String * amount: Int32 * ?yourRoomName: String -> ScreepCode    
     ///<summary>Create a market order in your terminal. You will be charged price*amount*0.05 credits when the order is placed. The maximum orders count is 300 per player. You can create an order at any time with any amount, it will be automatically activated and deactivated depending on the resource/credits availability.</summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
@@ -2816,7 +2806,7 @@ and GameMarket =
     ///</list></returns>
 
     ///<param name="sParams">An object with the following params:typestring The order type, either ORDER_SELL or ORDER_BUY. resourceTypestring Either one of the RESOURCE_* constants or one of account-bound resources (See INTERSHARD_RESOURCES constant). If your Terminal doesn't have the specified resource, the order will be temporary inactive. pricenumberThe price for one resource unit in credits. Can be a decimal number.totalAmountnumberThe amount of resources to be traded in total.roomName (optional)string The room where your order will be created. You must have your own Terminal structure in this room, otherwise the created order will be temporary inactive. This argument is not used when resourceType is one of account-bound resources (See INTERSHARD_RESOURCES constant).</param>
-    abstract GameMarketCreateOrder: ?sParams: GameMarketGameMarketCreateOrderparamsOpts -> ScreepCode    
+    abstract createOrder: ?sParams: GameMarketGameMarketCreateOrderparamsOpts -> ScreepCode    
     ///<summary>Change the price of an existing order. If newPrice is greater than old price, you will be charged (newPrice-oldPrice)*remainingAmount*0.05 credits.</summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
@@ -2826,7 +2816,7 @@ and GameMarket =
     ///</list></returns>
     ///<param name="orderId">The order ID as provided in Game.market.orders.</param>
     ///<param name="newPrice">The new order price.</param>
-    abstract GameMarketChangeOrderPrice: orderId: String * newPrice: double -> ScreepCode    
+    abstract changeOrderPrice: orderId: String * newPrice: double -> ScreepCode    
     ///<summary>Cancel a previously created order. The 5% fee is not returned.</summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
@@ -2834,23 +2824,35 @@ and GameMarket =
     ///</list></returns>
 
     ///<param name="orderId">The order ID as provided in Game.market.orders.</param>
-    abstract GameMarketCancelOrder: orderId: String -> ScreepCode
+    abstract cancelOrder: orderId: String -> ScreepCode
     ///<summary>Estimate the energy transaction cost of StructureTerminal.send and Game.market.deal methods. The formula:</summary>
     ///<param name="amount">Amount of resources to be sent.</param>
     ///<param name="roomName1">The name of the first room.</param>
     ///<param name="roomName2">The name of the second room.</param>
     ///<returns>The amount of energy required to perform the transaction.</returns>
-    abstract GameMarketCalcTransactionCost: amount: Int32 * roomName1: String * roomName2: String -> int
+    abstract calcTransactionCost: amount: Int32 * roomName1: String * roomName2: String -> int
     
     ///<summary>An object with your active and inactive buy/sell orders on the market. See getAllOrders for properties explanation.</summary>
     [<Emit("new Map(Object.entries(Game.market.orders))")>]
-    abstract GameMarketOrders:   Dictionary<string, GameMarketOrder>
+    abstract orders:   Dictionary<string, GameMarketOrder>
     ///<summary>An array of the last 100 outgoing transactions from your terminals with the following format:</summary>
-    abstract GameMarketOutgoingTransactions: Transaction array  
+    abstract outgoingTransactions: Transaction array  
     ///<summary>An array of the last 100 incoming transactions to your terminals with the following format:</summary>
-    abstract GameMarketIncomingTransactions:   Transaction array  
+    abstract incomingTransactions: Transaction array  
     ///<summary>Your current credits balance.</summary>
-    abstract GameMarketCredits:  double
+    abstract credits:  double
+
+and [<StringEnum>] VisualTextAlign =
+    | Center
+    | Left
+    | Right
+and [<StringEnum>] VisualFontVariant =
+    | Normal
+    | [<CompiledName("small-caps")>] SmallCaps
+and [<StringEnum>] VisualFontStyle =
+    | Normal
+    | Italic
+    | Oblique
 and GameMapVisualtextstyleOpts =
 
 
@@ -2864,10 +2866,10 @@ and GameMapVisualtextstyleOpts =
     abstract fontSize:  Int32 option
 
     ///<summary>The font style ('normal', 'italic' or 'oblique')</summary>
-    abstract fontStyle:  String option
+    abstract fontStyle:  VisualFontStyle option
 
     ///<summary>The font variant ('normal' or 'small-caps')</summary>
-    abstract fontVariant:  String option
+    abstract fontVariant:  VisualFontVariant option
 
     ///<summary>Stroke color in the following format: #ffffff (hex triplet). Default is undefined (no stroke).</summary>
     abstract stroke:  String option
@@ -2882,7 +2884,7 @@ and GameMapVisualtextstyleOpts =
     abstract backgroundPadding:  Int32 option
 
     ///<summary>Text align, either center, left, or right. Default is center.</summary>
-    abstract align:  String option
+    abstract align:  VisualTextAlign option
 
     ///<summary>Opacity value, default is 0.5.</summary>
     abstract opacity:  double option
@@ -2903,7 +2905,7 @@ and GameMapVisualpolystyleOpts =
     abstract strokeWidth:  double option
 
     ///<summary>Either undefined (solid line), dashed, or dotted. Default is undefined.</summary>
-    abstract lineStyle:  String option
+    abstract lineStyle:  LineStyle option
 ///<summary></summary>
 and GameMapVisualrectstyleOpts =
 
@@ -2921,7 +2923,7 @@ and GameMapVisualrectstyleOpts =
     abstract strokeWidth:  double option
 
     ///<summary>Either undefined (solid line), dashed, or dotted. Default is undefined.</summary>
-    abstract lineStyle:  String option
+    abstract lineStyle:  LineStyle option
 ///<summary></summary>
 and GameMapVisualcirclestyleOpts =
 
@@ -2942,7 +2944,7 @@ and GameMapVisualcirclestyleOpts =
     abstract strokeWidth:  double option
 
     ///<summary>Either undefined (solid line), dashed, or dotted. Default is undefined.</summary>
-    abstract lineStyle:  String option
+    abstract lineStyle:  LineStyle option
 ///<summary></summary>
 and GameMapVisuallinestyleOpts =
 
@@ -2957,7 +2959,7 @@ and GameMapVisuallinestyleOpts =
     abstract opacity:  double option
 
     ///<summary>Either undefined (solid line), dashed, or dotted. Default is undefined.</summary>
-    abstract lineStyle:  String option
+    abstract lineStyle:  LineStyle option
 
 
 ///<summary>Map visuals provide a way to show various visual debug info on the game map. You can use the Game.map.visual object to draw simple shapes that are visible only to you. Map visuals provide a way to show various visual debug info on the game map. You can use the Game.map.visualGame.map.visual object to draw simple shapes that are visible only to you. Map visuals are not stored in the database, their only purpose is to display something in your browser. All drawings will persist for one tick and will disappear if not updated. All Game.map.visual calls have no added CPU cost (their cost is natural and mostly related to simple JSON.serialize calls). However, there is a usage limit: you cannot post more than 1000 KB of serialized data. Map visuals are not stored in the database, their only purpose is to display something in your browser. All drawings will persist for one tick and will disappear if not updated. All Game.map.visualGame.map.visual calls have no added CPU cost (their cost is natural and mostly related to simple JSON.serializeJSON.serialize calls). However, there is a usage limit: you cannot post more than 1000 KB of serialized data. All draw coordinates are measured in global game coordinates (RoomPosition).All draw coordinates are measured in global game coordinates (RoomPositionRoomPositionRoomPosition).</summary>
@@ -2972,7 +2974,7 @@ and GameMapVisual =
     abstract export: unit -> string  
     ///<summary>Get the stored size of all visuals added on the map in the current tick. It must not exceed 1024,000 (1000 KB).</summary>
     ///<returns>A string with visuals data. There's not much you can do with the string besides store them for later.</returns>
-    abstract getSize: unit -> int64  
+    abstract getSize: unit -> int32  
     ///<summary>Remove all visuals from the map.</summary>
     ///<returns>The MapVisual object itself, so that you can chain calls.</returns>
     abstract clear: unit -> GameMapVisual
@@ -3034,21 +3036,22 @@ and GameMapFindRouteResult =
 and GameMapFindExitResult =
     | FindExitConstant of Find
     | FindExitError of ScreepCode
-and GameMap =
+and Map =
 
+    abstract visual: GameMapVisual
     ///<summary>Gets availablity status of the room with the specified name. Learn more about starting areas from this article.</summary>
     ///<param name="roomName">The room name.</param>
-    abstract GameMapGetRoomStatus: roomName: String -> GameMapGetRoomStatusResult     
+    abstract getRoomStatus: roomName: String -> GameMapGetRoomStatusResult     
     ///<summary>Returns the world size as a number of rooms between world corners. For example, for a world with rooms from W50N50 to E50S50 this method will return 102.</summary>
-    abstract GameMapGetWorldSize: unit -> int 
+    abstract getWorldSize: unit -> int 
     ///<summary>Get a Room.Terrain object which provides fast access to static terrain data. This method works for any room in the world even if you have no access to it.</summary>
     ///<param name="roomName">The room name.</param>
-    abstract GameMapGetRoomTerrain: roomName: String -> RoomTerrain  
+    abstract getRoomTerrain: roomName: String -> RoomTerrain  
     ///<summary>Get the linear distance (in rooms) between two rooms. You can use this function to estimate the energy cost of sending resources through terminals, or using observers and nukes.</summary>
     ///<param name="roomName1">The name of the first room.</param>
     ///<param name="roomName2">The name of the second room.</param>
     ///<param name="continuous">Whether to treat the world map continuous on borders. Set to true if you want to calculate the trade or terminal send cost. Default is false.</param>
-    abstract GameMapGetRoomLinearDistance: roomName1: String * roomName2: String * ?continuous: Boolean -> int 
+    abstract getRoomLinearDistance: roomName1: String * roomName2: String * ?continuous: Boolean -> int 
     ///<summary>Find route from the given room to another room.</summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>NoPath</term><description>Path can not be found.</description></item>
@@ -3056,7 +3059,7 @@ and GameMap =
     ///<param name="fromRoom">Start room name or room object.</param>
     ///<param name="toRoom">Finish room name or room object.</param>
     ///<param name="opts">An object with the following options:</param>
-    abstract GameMapFindRoute: fromRoom: U2<String, Room> * toRoom: U2<String, Room> * ?opts: GameMapGameMapFindRouteOpts -> GameMapFindRouteResult    
+    abstract findRoute: fromRoom: U2<String, Room> * toRoom: U2<String, Room> * ?opts: GameMapGameMapFindRouteOpts -> GameMapFindRouteResult    
     ///<summary>Find the exit direction from the given room en route to another room.</summary>
     ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
     ///<item><term>NoPath</term><description>Path can not be found.</description></item>
@@ -3066,23 +3069,23 @@ and GameMap =
     ///<param name="fromRoom">Start room name or room object.</param>
     ///<param name="toRoom">Finish room name or room object.</param>
     ///<param name="opts">An object with the pathfinding options. See findRoute.</param>
-    abstract GameMapFindExit: fromRoom: U2<String, Room> * toRoom: U2<String, Room> * ?opts:  GameMapGameMapFindRouteOpts -> GameMapFindExitResult    
+    abstract findExit: fromRoom: U2<String, Room> * toRoom: U2<String, Room> * ?opts:  GameMapGameMapFindRouteOpts -> GameMapFindExitResult    
     ///<summary>List all exits available from the room with the given name.</summary>
     ///<param name="roomName">The room name.</param>
-    [<Emit("new Map(Object.entries($1))")>]
-    abstract GameMapDescribeExits: roomName: String -> Dictionary<Find, string>
+    [<Emit("new Map(Object.entries(Game.map.describeExits($1)))")>]
+    abstract describeExits: roomName: String -> Dictionary<Find, string>
 
 ///<summary>InterShardMemory object provides an interface for communicating between shards. Your script is executed separatedly on each shard, and their Memory objects are isolated from each other. In order to pass messages and data between shards, you need to use InterShardMemory instead.InterShardMemoryInterShardMemory object provides an interface for communicating between shards. Your script is executed separatedly on each shard, and their MemoryMemoryMemory objects are isolated from each other. In order to pass messages and data between shards, you need to use InterShardMemoryInterShardMemory instead.Every shard can have its own 100 KB of data in string format that can be accessed by all other shards. A shard can write only to its own data, other shards' data is read-only.Every shard can have its own 100 KB of data in string format that can be accessed by all other shards. A shard can write only to its own data, other shards' data is read-only.This data has nothing to do with Memory contents, it's a separate data container. This data has nothing to do with MemoryMemory contents, it's a separate data container. </summary>
 and InterShardMemory =
 
     ///<summary>Returns the string contents of another shard's data.</summary>
     ///<param name="shard">Shard name.</param>
-    abstract InterShardMemoryGetRemote: shard: String -> string  
+    abstract getRemote: shard: String -> string  
     ///<summary>Replace the current shard's data with the new value.</summary>
     ///<param name="value">New data value in string format.</param>
-    abstract InterShardMemorySetLocal: value: String -> unit    
+    abstract setLocal: value: String -> unit    
     ///<summary>Returns the string contents of the current shard's data. </summary>
-    abstract InterShardMemoryGetLocal: unit -> string
+    abstract getLocal: unit -> string
 ///<summary></summary>
 and GameGameShardResult =
 
@@ -3120,17 +3123,16 @@ and GameGameGclResult =
     ///<summary>The progress required to reach the next level.</summary>
     abstract progressTotal:  Int32
 ///<summary></summary>
-and GameGameCpuResult =
-
+and CPU =
 
     ///<summary>Your assigned CPU limit for the current shard.</summary>
-    abstract limit:  Int32
+    abstract limit:  int32
 
     ///<summary>An amount of available CPU time at the current game tick. Usually it is higher than Game.cpu.limit. Learn more</summary>
-    abstract tickLimit:  Int32
+    abstract tickLimit:  int32
 
     ///<summary>An amount of unused CPU accumulated in your bucket.</summary>
-    abstract bucket:  Int32
+    abstract bucket:  int32
 
     ///<summary>An object with limits for each shard with shard names as keys. You can use setShardLimits method to re-assign them.</summary>
     [<Emit("new Map(Object.entries(Game.cpu.shardLimits))")>]
@@ -3141,6 +3143,36 @@ and GameGameCpuResult =
 
     ///<summary>The time in milliseconds since UNIX epoch time until full CPU is unlocked for your account. This property is not defined when full CPU is not unlocked for your account or it's unlocked with a subscription.</summary>
     abstract unlockedTime:  int64
+
+    ///<summary>Generate 1 pixel resource unit for 10000 CPU from your bucket.</summary>
+    ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
+    ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
+    ///<item><term>NotEnoughResources</term><description>Your bucket does not have enough CPU.</description></item>
+    ///</list></returns>
+    abstract generatePixel: unit -> ScreepCode    
+    ///<summary>Unlock full CPU for your account for additional 24 hours. This method will consume 1 CPU unlock bound to your account (See Game.resources). If full CPU is not currently unlocked for your account, it may take some time (up to 5 minutes) before unlock is applied to your account.</summary>
+    ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
+    ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
+    ///<item><term>NotEnoughResources</term><description>Your account does not have enough cpuUnlock resource.</description></item>
+    ///<item><term>Full</term><description>Your CPU is unlocked with a subscription.</description></item>
+    ///</list></returns>
+    abstract unlock: unit -> ScreepCode   
+    ///<summary>Allocate CPU limits to different shards. Total amount of CPU should remain equal to Game.cpu.shardLimits. This method can be used only once per 12 hours.</summary>
+    ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
+    ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
+    ///<item><term>Busy</term><description>12-hours cooldown period is not over yet.</description></item>
+    ///<item><term>InvalidArgs</term><description>The argument is not a valid shard limits object.</description></item>
+    ///</list></returns>
+
+    ///<param name="limits">An object with CPU values for each shard in the same format as Game.cpu.shardLimits.</param>
+    abstract setShardLimits: limits:  obj -> ScreepCode    
+    ///<summary>This method is only available when Virtual machine is set to Isolated in your account runtime settings.</summary>
+    abstract halt: unit -> unit 
+    ///<summary>Get amount of CPU time used from the beginning of the current game tick. Always returns 0 in the Simulation mode.</summary>
+    ///<returns>Returns currently used CPU time as a float number.</returns>
+    abstract getUsed: unit -> double    
+    ///<summary>This method is only available when Virtual machine is set to Isolated in your account runtime settings.</summary>
+    abstract getHeapStatistics: unit -> HeapStatisctic 
 
 ///<summary>The main global game object containing all the game play information.The main global game object containing all the game play information.</summary>
 and HeapStatisctic = {
@@ -3160,86 +3192,52 @@ and Game =
     ///<summary>Send a custom message at your profile email. This way, you can set up notifications to yourself on any occasion within the game. You can schedule up to 20 notifications during one game tick. Not available in the Simulation Room.</summary>
     ///<param name="message">Custom text which will be sent in the message. Maximum length is 1000 characters.</param>
     ///<param name="groupInterval">If set to 0 (default), the notification will be scheduled immediately. Otherwise, it will be grouped with other notifications and mailed out later using the specified time in minutes.</param>
-    abstract GameNotify: message: String * groupInterval: Int32 -> unit    
+    abstract notify: message: String * groupInterval: Int32 -> unit    
     ///<summary>Get an object with the specified unique ID. It may be a game object of any type. Only objects from the rooms which are visible to you can be accessed.</summary>
     ///<param name="id">The unique identificator.</param>
     ///<returns>Returns an object instance or null if it cannot be found.</returns>
-    abstract GameGetObjectById<'T> : id: String -> 'T option
-    ///<summary>Generate 1 pixel resource unit for 10000 CPU from your bucket.</summary>
-    ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
-    ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
-    ///<item><term>NotEnoughResources</term><description>Your bucket does not have enough CPU.</description></item>
-    ///</list></returns>
-
-    abstract GameCpuGeneratePixel: unit -> ScreepCode    
-    ///<summary>Unlock full CPU for your account for additional 24 hours. This method will consume 1 CPU unlock bound to your account (See Game.resources). If full CPU is not currently unlocked for your account, it may take some time (up to 5 minutes) before unlock is applied to your account.</summary>
-    ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
-    ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
-    ///<item><term>NotEnoughResources</term><description>Your account does not have enough cpuUnlock resource.</description></item>
-    ///<item><term>Full</term><description>Your CPU is unlocked with a subscription.</description></item>
-    ///</list></returns>
-
-    abstract GameCpuUnlock: unit -> ScreepCode   
-    ///<summary>Allocate CPU limits to different shards. Total amount of CPU should remain equal to Game.cpu.shardLimits. This method can be used only once per 12 hours.</summary>
-    ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
-    ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
-    ///<item><term>Busy</term><description>12-hours cooldown period is not over yet.</description></item>
-    ///<item><term>InvalidArgs</term><description>The argument is not a valid shard limits object.</description></item>
-    ///</list></returns>
-
-    ///<param name="limits">An object with CPU values for each shard in the same format as Game.cpu.shardLimits.</param>
-    abstract GameCpuSetShardLimits: limits:  obj -> ScreepCode    
-    ///<summary>This method is only available when Virtual machine is set to Isolated in your account runtime settings.</summary>
-    abstract GameCpuHalt: unit -> unit 
-    ///<summary>Get amount of CPU time used from the beginning of the current game tick. Always returns 0 in the Simulation mode.</summary>
-    ///<returns>Returns currently used CPU time as a float number.</returns>
-    abstract GameCpuGetUsed: unit -> double    
-    ///<summary>This method is only available when Virtual machine is set to Isolated in your account runtime settings.</summary>
-    abstract GameCpuGetHeapStatistics: unit -> HeapStatisctic 
+    abstract getObjectById<'T> : id: String -> 'T option
     ///<summary>System game tick counter. It is automatically incremented on every tick. Learn more</summary>
-    abstract GameTime:  Int64
+    abstract time:  Int64
     ///<summary>A hash containing all your structures with structure id as hash keys.</summary>
     [<Emit("new Map(Object.entries(Game.structures))")>]
-    abstract GameStructures:  Dictionary<string, Structure>
+    abstract structures:  Dictionary<string, Structure>
     ///<summary>A hash containing all your spawns with spawn names as hash keys.</summary>
     [<Emit("new Map(Object.entries(Game.spawns))")>]
-    abstract GameSpawns: Dictionary<string, StructureSpawn>
+    abstract spawns: Dictionary<string, StructureSpawn>
     ///<summary>An object describing the world shard where your script is currently being executed in.</summary>
-    abstract GameShard:  GameGameShardResult
+    abstract shard:  GameGameShardResult
     ///<summary>A hash containing all the rooms available to you with room names as hash keys. A room is visible if you have a creep or an owned structure in it.</summary>
     [<Emit("new Map(Object.entries(Game.rooms))")>]
-    abstract GameRooms:  Dictionary<string, Room>
+    abstract rooms:  Dictionary<string, Room>
     ///<summary>An object with your global resources that are bound to the account, like pixels or cpu unlocks. Each object key is a resource constant, values are resources amounts.</summary>
     [<Emit("new Map(Object.entries(Game.resources))")>]
-    abstract GameResources: Dictionary<ResourceType, int>
+    abstract resources: Dictionary<ResourceType, int>
     ///<summary>A hash containing all your power creeps with their names as hash keys. Even power creeps not spawned in the world can be accessed here. </summary>
     [<Emit("new Map(Object.entries(Game.powerCreeps))")>]
-    abstract GamePowerCreeps: Dictionary<string, PowerCreep>
+    abstract powerCreeps: Dictionary<string, PowerCreep>
     ///<summary>A global object representing the in-game market. See the documentation below.</summary>
-    abstract GameMarket:   GameMarket 
+    abstract market:   Market 
     ///<summary>A global object representing world map. See the documentation below.</summary>
-    abstract GameMap:   GameMap 
+    abstract map:   Map 
     ///<summary>Your Global Power Level, an object with the following properties :</summary>
-    abstract GameGpl:  GameGameGplResult
+    abstract gpl:  GameGameGplResult
     ///<summary>Your Global Control Level, an object with the following properties :</summary>
-    abstract GameGcl:  GameGameGclResult
+    abstract gcl:  GameGameGclResult
     ///<summary>A hash containing all your flags with flag names as hash keys.</summary>
     [<Emit("new Map(Object.entries(Game.flags))")>]
-    abstract GameFlags:  Dictionary<string, Flag>
+    abstract flags:  Dictionary<string, Flag>
     ///<summary>A hash containing all your creeps with creep names as hash keys.</summary>
     [<Emit("new Map(Object.entries(Game.creeps))")>]
-    abstract GameCreeps:  Dictionary<string, Creep>
+    abstract creeps:  Dictionary<string, Creep>
     ///<summary>An object containing information about your CPU usage with the following properties:</summary>
-    abstract GameCpu:  GameGameCpuResult
+    abstract cpu:  CPU
     ///<summary>A hash containing all your construction sites with their id as hash keys.</summary>
     [<Emit("new Map(Object.entries(Game.constructionSites))")>]
-    abstract GameConstructionSites:  Dictionary<string, ConstructionSite>
+    abstract constructionSites:  Dictionary<string, ConstructionSite>
 
 let [<Global>] Game: Game = jsNative
 let [<Global>] InterShardMemory: InterShardMemory = jsNative
-let [<Global>] GameMap: GameMap = jsNative
-let [<Global>] GameMapVisual: GameMapVisual = jsNative
-let [<Global>] GameMarket: GameMarket = jsNative
 let [<Global>] Memory: Memory = jsNative
 let [<Global>] PathFinder: PathFinder = jsNative
 let [<Global>] RawMemory: RawMemory = jsNative
@@ -3254,6 +3252,32 @@ type RoomPositionStatic =
 
 let [<Global>] RoomPosition: RoomPositionStatic = jsNative
 
+type PowerCreepStatic =
+    ///<summary>A static method to create new Power Creep instance in your account. It will be added in an unspawned state, use spawn method to spawn it in the world.</summary>
+    ///<returns><list type="bullet"><listheader><term>code</term><description></description></listheader>
+    ///<item><term>OK</term><description>The operation has been scheduled successfully.</description></item>
+    ///<item><term>NameExists</term><description>A power creep with the specified name already exists.</description></item>
+    ///<item><term>NotEnoughResources</term><description>You don't have free Power Levels in your account.</description></item>
+    ///<item><term>InvalidArgs</term><description>The provided power creep name is exceeds the limit, or the power creep class is invalid.</description></item>
+    ///</list></returns>
+    ///<param name="name">The name of the new power creep. The name length limit is 100 characters.</param>
+    ///<param name="className">The class of the new power creep, one of the POWER_CLASS constants.</param>
+    abstract create: name: String * className: PowerClass -> ScreepCode
+
+let [<Global>] PowerCreep: PowerCreepStatic = jsNative
+
+type RoomStatic =
+    ///<summary>Deserialize a short string path representation into an array form.</summary>
+    ///<param name="path">A serialized path string.</param>
+    ///<returns>A path array.</returns>
+    abstract deserializePath: path: String -> PathSegment list
+    ///<summary>Serialize a path array into a short string representation, which is suitable to store in memory.</summary>
+    ///<param name="path">A path array retrieved from Room.findPath.</param>
+    ///<returns>A serialized string form of the given path.</returns>
+    abstract serializePath: path:  PathSegment array  -> string
+
+let [<Global>] Room: RoomStatic = jsNative
+
 type RoomVisualStatic = 
     [<EmitConstructor>]
     ///<summary>You can directly create new RoomVisual object in any room, even if it's invisible to your script.</summary>
@@ -3263,6 +3287,10 @@ type RoomVisualStatic =
 let [<Global>] RoomVisual: RoomVisualStatic = jsNative
 
 type PathFinderCostMatrixStatic = 
+    [<Emit("PathFinder.CostMatrix.deserialize($1)")>]
+    ///<summary>Static method which deserializes a new CostMatrix using the return value of serialize.</summary>
+    ///<param name="value">Whatever serialize returned</param>
+    abstract deserialize: value: int array -> PathFinderCostMatrix  
     [<Emit("new PathFinder.CostMatrix")>]
     ///<summary>Creates a new CostMatrix containing 0's for all positions. </summary>
     abstract Create: unit -> PathFinderCostMatrix
